@@ -3,7 +3,7 @@
         Dashboard s
     </div>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 definePageMeta({
     middleware: 'auth-middleware'
 })

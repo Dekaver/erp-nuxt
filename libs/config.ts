@@ -11,6 +11,7 @@ const config = {
     CAPTCHA_KEY: process.env.CAPTCHA_KEY as string,
     CAPTCHA_SECRET: process.env.CAPTCHA_SECRET as string,
     DISABLE_CAPTCHA: (process.env.DISABLE_CAPTCHA as string) == "TRUE" ? false : true,
+    SAME_SITE: (process.env.SAME_SITE as 'lax' | 'strict' | 'none') || 'lax'
 };
 
 // Ensure required environment variables are present
