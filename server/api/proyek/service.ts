@@ -1,5 +1,5 @@
 import { and, eq, ne, sql } from "drizzle-orm";
-import { type NewProyek, type Proyek, proyek, UpdateProyek } from "./schema";
+import { type NewProyek, type Proyek, proyek, type UpdateProyek } from "./schema";
 
 export const getProyek = async (tx = db) => {
     return await tx.select().from(proyek).orderBy(proyek.kode);

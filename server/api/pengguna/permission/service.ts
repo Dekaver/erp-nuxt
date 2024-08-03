@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 import { type NewPenggunaPermission, type PenggunaPermission, pengguna_permission } from "./schema";
-import db from "../../../libs/db";
 
 export const getPenggunaPermission = async (tx = db) => {
 	const data = await tx.select().from(pengguna_permission);

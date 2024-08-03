@@ -1,11 +1,11 @@
-import { Router } from "express";
-import { index, store, update, destroy } from "./controller";
-import { auth } from "../../middleware/authMiddleware";
-const router = Router().use(auth);
+// import { Router } from "express";
+// import { index, store, update, destroy } from "./controller";
 
-router.get("/", index);
-router.post("/", store);
-router.patch("/", update);
-router.delete("/", destroy);
+// const router = Router().use(auth);
 
-export { router as settingPenjualanRoute };
+// router.get("/", index);
+// router.post("/", store);
+// router.patch("/", update);
+// router.delete("/", destroy);
+
+// export { router as settingPenjualanRoute };

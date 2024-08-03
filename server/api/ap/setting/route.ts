@@ -1,12 +1,12 @@
-import { Router } from "express";
+// import { Router } from "express";
 
-import { auth } from "../../../middleware/authMiddleware";
-import { index, store, update } from "./controller";
+// import { auth } from "../../../middleware/authMiddleware";
+// import { index, store, update } from "./controller";
 
-const router = Router().use(auth);
+// const router = Router().use(auth);
 
-router.get("/", index);
-router.post("/", store);
-router.patch("/:id", update);
+// router.get("/", index);
+// router.post("/", store);
+// router.patch("/:id", update);
 
-export { router as apSettingRoute };
+// export { router as apSettingRoute };

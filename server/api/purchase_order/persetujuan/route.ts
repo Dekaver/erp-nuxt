@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { getPersetujuan, updatePersetujuan } from "./controller";
+// import { Router } from "express";
+// import { getPersetujuan, updatePersetujuan } from "./controller";
 
-const router = Router();
+// const router = Router();
 
-router.get("/", getPersetujuan)
-router.patch("/", updatePersetujuan);
+// router.get("/", getPersetujuan)
+// router.patch("/", updatePersetujuan);
 
-export { router as purchaseOrderPersetujuanRoute };
+// export { router as purchaseOrderPersetujuanRoute };

@@ -485,6 +485,9 @@ export default {
 @import '@/assets/css/layout-light.css';
 </style>
 <style>
+.field input{
+    width: 100%;
+}
 .p-menuitem-active .p-submenu-list {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);

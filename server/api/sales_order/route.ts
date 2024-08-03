@@ -1,23 +1,23 @@
-import { Router } from "express";
-import { index, show, store, update, destroy, monitoringSalesOrder, outstandingSalesOrder, storeWithQuotation } from "../sales_order/controller";
-import { auth } from "../../middleware/authMiddleware";
-import { salesOrderSettingRoute } from "./setting/route";
-import { salesOrderPersetujuanRoute } from "./persetujuan/route";
+// import { Router } from "express";
+// import { index, show, store, update, destroy, monitoringSalesOrder, outstandingSalesOrder, storeWithQuotation } from "../sales_order/controller";
 
-const router = Router().use(auth);
+// import { salesOrderSettingRoute } from "./setting/route";
+// import { salesOrderPersetujuanRoute } from "./persetujuan/route";
 
-router.use("/setting", salesOrderSettingRoute);
-router.use("/persetujuan", salesOrderPersetujuanRoute);
+// const router = Router().use(auth);
 
-// router.get("/option", getOption);
-router.get("/monitoring-sales-order", monitoringSalesOrder);
-router.get("/outstanding", outstandingSalesOrder);
-router.get("/", index);
-router.get("/:id", show);
-router.post("/", store);
-router.patch("/:id", update);
-router.delete("/:id", destroy);
+// router.use("/setting", salesOrderSettingRoute);
+// router.use("/persetujuan", salesOrderPersetujuanRoute);
 
-router.post("/po/create", storeWithQuotation);
+// // router.get("/option", getOption);
+// router.get("/monitoring-sales-order", monitoringSalesOrder);
+// router.get("/outstanding", outstandingSalesOrder);
+// router.get("/", index);
+// router.get("/:id", show);
+// router.post("/", store);
+// router.patch("/:id", update);
+// router.delete("/:id", destroy);
 
-export { router as soRoute };
+// router.post("/po/create", storeWithQuotation);
+
+// export { router as soRoute };

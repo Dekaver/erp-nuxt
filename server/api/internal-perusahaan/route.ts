@@ -1,13 +1,13 @@
-import { Router } from "express";
-import { auth } from "../../middleware/authMiddleware";
-import { show, store, update, destroy, index } from "./controller";
+// import { Router } from "express";
 
-const router = Router();
+// import { show, store, update, destroy, index } from "./controller";
 
-router.get("/", auth, index);
-router.get("/:id", auth, show);
-router.post("/", auth, store);
-router.patch("/:id", auth, update);
-router.delete("/:id", auth, destroy);
+// const router = Router();
 
-export { router as internalPerusahaanRoute };
+// router.get("/", auth, index);
+// router.get("/:id", auth, show);
+// router.post("/", auth, store);
+// router.patch("/:id", auth, update);
+// router.delete("/:id", auth, destroy);
+
+// export { router as internalPerusahaanRoute };

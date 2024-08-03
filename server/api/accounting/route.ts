@@ -1,17 +1,17 @@
-import { Router } from "express";
-import { auth } from "../../middleware/authMiddleware";
-import { cetakLabaRugi, showJurnal, exportJurnal, showBukuBesar, cetakNeraca } from "./controller";
-import { showLaporanAr } from "../ar/controller";
-import { showLaporanAp } from "../ap/controller";
+// import { Router } from "express";
 
-const router = Router();
+// import { cetakLabaRugi, showJurnal, exportJurnal, showBukuBesar, cetakNeraca } from "./controller";
+// import { showLaporanAr } from "../ar/controller";
+// import { showLaporanAp } from "../ap/controller";
 
-router.get("/ap", auth, showLaporanAp);
-router.get("/ar", auth, showLaporanAr);
-router.get("/jurnal", auth, showJurnal);
-router.get("/jurnal/export", auth, exportJurnal);
-router.get("/buku-besar", auth, showBukuBesar);
-router.get(`/laba-rugi`, auth, cetakLabaRugi);
-router.get(`/neraca`, auth, cetakNeraca);
+// const router = Router();
 
-export { router as accountingRoute };
+// router.get("/ap", auth, showLaporanAp);
+// router.get("/ar", auth, showLaporanAr);
+// router.get("/jurnal", auth, showJurnal);
+// router.get("/jurnal/export", auth, exportJurnal);
+// router.get("/buku-besar", auth, showBukuBesar);
+// router.get(`/laba-rugi`, auth, cetakLabaRugi);
+// router.get(`/neraca`, auth, cetakNeraca);
+
+// export { router as accountingRoute };

@@ -5,8 +5,7 @@ import { departemen } from "../departemen/schema";
 import { provinces, cities, districts } from "../indo/schema";
 import { jabatan } from "../jabatan/schema";
 import { pengguna } from "../pengguna/schema";
-import { role } from "../role/schema";
-import { pegawai, Pegawai, NewPegawai, pegawaiColumns } from "./schema";
+import { pegawai, Pegawai, NewPegawai, PegawaiColumns } from "./schema";
 
 export const getPegawai = async (tx = db) => {
     const provinsi_ktp = alias(provinces, "provinsi_ktp");
@@ -17,7 +16,7 @@ export const getPegawai = async (tx = db) => {
     const kecamatan_domisili = alias(districts, "kecamatan_domisili");
     const data = await tx
         .select({
-            ...pegawaiColumns,
+            ...PegawaiColumns,
             jabatan: jabatan.jabatan,
             departemen: departemen.departemen,
             agama: agama.agama,
@@ -48,10 +47,10 @@ export const getPegawaiById = async (params: Pegawai["id"], tx = db) => {
     const provinsi_domisili = alias(provinces, "provinsi_domisili");
     const kabupaten_domisili = alias(cities, "kabupaten_domisili");
     const kecamatan_domisili = alias(districts, "kecamatan_domisili");
-    const pegawaiColumns = getTableColumns(pegawai);
+    const PegawaiColumns = getTableColumns(pegawai);
     const data = await tx
         .select({
-            ...pegawaiColumns,
+            ...PegawaiColumns,
             jabatan: jabatan.jabatan,
             departemen: departemen.departemen,
             agama: agama.agama,
@@ -63,7 +62,6 @@ export const getPegawaiById = async (params: Pegawai["id"], tx = db) => {
             kecamatan_domisili_nama: kecamatan_domisili.dis_name,
             username: pengguna.usernamenya,
             login_terakhir: pengguna.loginterakhir,
-            role: role.role,
         })
         .from(pegawai)
         .leftJoin(jabatan, eq(pegawai.id_jabatan, jabatan.id))
@@ -76,7 +74,6 @@ export const getPegawaiById = async (params: Pegawai["id"], tx = db) => {
         .leftJoin(kabupaten_domisili, eq(pegawai.kabupaten_domisili, kabupaten_domisili.city_id))
         .leftJoin(kecamatan_domisili, eq(pegawai.kecamatan_domisili, kecamatan_domisili.dis_id))
         .leftJoin(pengguna, eq(pegawai.id, pengguna.id_pegawai))
-        .leftJoin(role, eq(pengguna.role, role.id))
         .where(eq(pegawai.id, params));
     return data[0];
 };
@@ -111,7 +108,7 @@ export const getAvailablePegawai = async (tx = db) => {
 export const getPegawaiByIdJabatan = async (id_jabatan: Pegawai["id_jabatan"], tx = db) => {
     return await tx
         .select({
-            ...pegawaiColumns,
+            ...PegawaiColumns,
             jabatan: jabatan.jabatan,
         })
         .from(pegawai)
@@ -126,7 +123,7 @@ export const getPegawaiHeadDepartemen = async (id: Pegawai["id"], tx = db) => {
     }
     const lPegawai = await tx
         .select({
-            ...pegawaiColumns,
+            ...PegawaiColumns,
             is_head_departemen: jabatan.is_head_departemen,
             departemen: departemen.departemen,
         })

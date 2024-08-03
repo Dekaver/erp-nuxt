@@ -1,10 +1,10 @@
-import { Router } from "express";
+// import { Router } from "express";
 
-import { auth } from "../../middleware/authMiddleware";
-import { resetDB } from "./controller";
 
-const router = Router();
+// import { resetDB } from "./controller";
 
-router.get("/resetDB", auth, resetDB);
+// const router = Router();
 
-export { router as devRoute };
+// router.get("/resetDB", auth, resetDB);
+
+// export { router as devRoute };

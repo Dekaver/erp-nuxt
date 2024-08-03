@@ -1,99 +1,99 @@
-import { NextFunction, Request, Response } from "express";
-import { ToString } from "../../libs/formater";
-import { MyRequest } from "../../middleware/authMiddleware";
-import { insertAccArFakturSchema } from "../ar/schema";
-import { getAccArFakturSaldoAwal, getAccArFakturById, isAvailableNomor, createAccArFaktur, updateAccArFaktur, deleteAccArFaktur, isCanEdit } from "../ar/service";
+// import { NextFunction, Request, Response } from "express";
 
-export const index = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = await getAccArFakturSaldoAwal();
-        res.status(200).json({
-            message: "Success get Saldo Awal",
-            data: data,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+// import { MyRequest } from "../../middleware/authMiddleware";
+// import { insertAccArFakturSchema } from "../ar/schema";
+// import { getAccArFakturSaldoAwal, getAccArFakturById, isAvailableNomor, createAccArFaktur, updateAccArFaktur, deleteAccArFaktur, isCanEdit } from "../ar/service";
 
-export const show = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const invoice = req.params.invoice;
-        const data = await getAccArFakturById(invoice);
-        res.status(200).json({
-            message: "Success get saldo awal",
-            data: data,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+// export const index = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const data = await getAccArFakturSaldoAwal();
+//         res.status(200).json({
+//             message: "Success get Saldo Awal",
+//             data: data,
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
-export const store = async (req: MyRequest, res: Response, next: NextFunction) => {
-    try {
-        const { amount, invoice, ...rest } = req.body;
-        const isAvailable = await isAvailableNomor(invoice);
+// export const show = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const invoice = req.params.invoice;
+//         const data = await getAccArFakturById(invoice);
+//         res.status(200).json({
+//             message: "Success get saldo awal",
+//             data: data,
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
-        if (!isAvailable) {
-            throw ValidationError("invoice sudah terpakai");
-        }
-        const validate = insertAccArFakturSchema.parse({
-            ...rest,
-            invoice: invoice,
-            amount: ToString(amount),
-        });
+// export const store = async (req: MyRequest, res: Response, next: NextFunction) => {
+//     try {
+//         const { amount, invoice, ...rest } = req.body;
+//         const isAvailable = await isAvailableNomor(invoice);
 
-        const data = await createAccArFaktur(validate);
-        res.status(200).json({
-            message: "Success crate Saldo Awal",
-            data: data,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+//         if (!isAvailable) {
+//             throw ValidationError("invoice sudah terpakai");
+//         }
+//         const validate = insertAccArFakturSchema.parse({
+//             ...rest,
+//             invoice: invoice,
+//             amount: ToString(amount),
+//         });
 
-export const update = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { amount, ...rest } = req.body;
+//         const data = await createAccArFaktur(validate);
+//         res.status(200).json({
+//             message: "Success crate Saldo Awal",
+//             data: data,
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
-        const invoice = req.params.id;
+// export const update = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const { amount, ...rest } = req.body;
 
-        const isCan = await isCanEdit(invoice);
+//         const invoice = req.params.id;
 
-        if (!isCan) {
-            throw ValidationError("Sudah Ada Pembayaran, Tidak Dapat Di Edit");
-        }
+//         const isCan = await isCanEdit(invoice);
 
-        const validate = insertAccArFakturSchema.parse({
-            ...rest,
-            amount: ToString(amount),
-        });
+//         if (!isCan) {
+//             throw ValidationError("Sudah Ada Pembayaran, Tidak Dapat Di Edit");
+//         }
 
-        const data = await updateAccArFaktur(invoice, validate);
-        res.status(200).json({
-            message: "Success crate Saldo Awal",
-            data: data,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+//         const validate = insertAccArFakturSchema.parse({
+//             ...rest,
+//             amount: ToString(amount),
+//         });
 
-export const destroy = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const invoice = req.params.id;
-        const isCan = await isCanEdit(invoice);
+//         const data = await updateAccArFaktur(invoice, validate);
+//         res.status(200).json({
+//             message: "Success crate Saldo Awal",
+//             data: data,
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
-        if (!isCan) {
-            throw ValidationError("Sudah Ada Pembayaran, Tidak Dapat Di Edit");
-        }
-        const data = await deleteAccArFaktur(invoice);
-        res.status(200).json({
-            message: "Success Delete Saldo Awal",
-            data: data,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+// export const destroy = async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const invoice = req.params.id;
+//         const isCan = await isCanEdit(invoice);
+
+//         if (!isCan) {
+//             throw ValidationError("Sudah Ada Pembayaran, Tidak Dapat Di Edit");
+//         }
+//         const data = await deleteAccArFaktur(invoice);
+//         res.status(200).json({
+//             message: "Success Delete Saldo Awal",
+//             data: data,
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };

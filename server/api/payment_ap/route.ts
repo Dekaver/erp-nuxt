@@ -1,20 +1,20 @@
-import { Router } from "express";
-import { index, show, store, update, destroy, indexBySupplier, journalCetak } from "./controller";
-import { auth } from "../../middleware/authMiddleware";
-import { paymentApSettingRoute } from "./setting/route";
-import { paymentApPersetujuanRoute } from "./persetujuan/route";
+// import { Router } from "express";
+// import { index, show, store, update, destroy, indexBySupplier, journalCetak } from "./controller";
 
-const router = Router().use(auth);
+// import { paymentApSettingRoute } from "./setting/route";
+// import { paymentApPersetujuanRoute } from "./persetujuan/route";
 
-router.use("/setting", paymentApSettingRoute);
-router.use("/persetujuan", paymentApPersetujuanRoute);
+// const router = Router().use(auth);
 
-router.get("/", index);
-router.get("/supplier/:supplier", indexBySupplier);
-router.get("/:id/journal", journalCetak);
-router.get("/:id", show);
-router.post("/", store);
-router.patch("/:id", update);
-router.delete("/:id", destroy);
+// router.use("/setting", paymentApSettingRoute);
+// router.use("/persetujuan", paymentApPersetujuanRoute);
 
-export { router as paymentApRoute };
+// router.get("/", index);
+// router.get("/supplier/:supplier", indexBySupplier);
+// router.get("/:id/journal", journalCetak);
+// router.get("/:id", show);
+// router.post("/", store);
+// router.patch("/:id", update);
+// router.delete("/:id", destroy);
+
+// export { router as paymentApRoute };

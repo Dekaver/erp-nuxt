@@ -1,7 +1,6 @@
 import { asc, eq, ilike, or, SQL, sql } from "drizzle-orm";
 import { type NewPermission, type Permission, permission, permissionColumns } from "../permission/schema";
 import { alias } from "drizzle-orm/pg-core";
-import { role, role_permission } from "../role/schema";
 import { pengguna } from "../pengguna/schema";
 import { pengguna_permission } from "../pengguna/permission/schema";
 
@@ -75,10 +74,7 @@ export const getPermissionByRole = async (params: number, tx = db) => {
 	const [dataPermission] = await tx
 		.select({ permission: sql<string[]>`JSON_AGG(permission.permission)` })
 		.from(permission)
-		.innerJoin(role_permission, eq(role_permission.id_permission, permission.id))
-		.innerJoin(role, eq(role.id, role_permission.id_role))
-		.where(eq(role.id, params));
-
+		
 	return dataPermission?.permission;
 };
 

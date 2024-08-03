@@ -1,23 +1,23 @@
-import { Router } from "express";
-import { index, show, store, update, destroy, option, outstandingPO, cetak, storeWithPurchaseRequest } from "./controller";
-import { auth } from "../../middleware/authMiddleware";
-import { poSettingRoute } from "./setting/route";
-import { purchaseOrderPersetujuanRoute } from "./persetujuan/route";
+// import { Router } from "express";
+// import { index, show, store, update, destroy, option, outstandingPO, cetak, storeWithPurchaseRequest } from "./controller";
 
-const router = Router().use(auth);
+// import { poSettingRoute } from "./setting/route";
+// import { purchaseOrderPersetujuanRoute } from "./persetujuan/route";
 
-router.use("/setting", poSettingRoute);
-router.use("/persetujuan", purchaseOrderPersetujuanRoute);
+// const router = Router().use(auth);
 
-router.get(`/outstanding`, outstandingPO);
-router.get("/option", option);
-router.get("/:id/cetak", cetak);
-router.get("/:id", show);
-router.get("/", index);
-router.post("/", store);
-router.patch("/:id", update);
-router.delete("/:id", destroy);
+// router.use("/setting", poSettingRoute);
+// router.use("/persetujuan", purchaseOrderPersetujuanRoute);
 
-router.post("/purchase-request", storeWithPurchaseRequest);
+// router.get(`/outstanding`, outstandingPO);
+// router.get("/option", option);
+// router.get("/:id/cetak", cetak);
+// router.get("/:id", show);
+// router.get("/", index);
+// router.post("/", store);
+// router.patch("/:id", update);
+// router.delete("/:id", destroy);
 
-export { router as purchaseOrderRoute };
+// router.post("/purchase-request", storeWithPurchaseRequest);
+
+// export { router as purchaseOrderRoute };

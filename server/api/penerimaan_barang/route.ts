@@ -1,24 +1,24 @@
-import { Router } from "express";
-import { index, show, store, update, destroy, option } from "./controller";
-import { auth } from "../../middleware/authMiddleware";
-import { penerimaanBarangSettingRoute } from "./setting/route";
-import { penerimaanBarangPersetujuanRoute } from "./persetujuan/route";
+// import { Router } from "express";
+// import { index, show, store, update, destroy, option } from "./controller";
 
-const router = Router().use(auth);
+// import { penerimaanBarangSettingRoute } from "./setting/route";
+// import { penerimaanBarangPersetujuanRoute } from "./persetujuan/route";
 
-router.use("/setting", penerimaanBarangSettingRoute);
-router.use("/persetujuan", penerimaanBarangPersetujuanRoute);
+// const router = Router().use(auth);
 
-router.get("/detail", index);
-router.get("/option", option);
-router.get("/", index);
-router.get("/:id/detail", show);
-router.get("/:id", show);
-router.post("/detail", store);
-router.post("/", store);
-router.patch("/:id/detail", update);
-router.patch("/:id", update);
-router.delete("/:id/detail", destroy);
-router.delete("/:id", destroy);
+// router.use("/setting", penerimaanBarangSettingRoute);
+// router.use("/persetujuan", penerimaanBarangPersetujuanRoute);
 
-export { router as penerimaanBarangRoute };
+// router.get("/detail", index);
+// router.get("/option", option);
+// router.get("/", index);
+// router.get("/:id/detail", show);
+// router.get("/:id", show);
+// router.post("/detail", store);
+// router.post("/", store);
+// router.patch("/:id/detail", update);
+// router.patch("/:id", update);
+// router.delete("/:id/detail", destroy);
+// router.delete("/:id", destroy);
+
+// export { router as penerimaanBarangRoute };

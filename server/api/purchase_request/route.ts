@@ -1,24 +1,24 @@
-import { Router } from "express";
+// import { Router } from "express";
 
-import { auth } from "../../middleware/authMiddleware";
-import { cetak, destroy, getAutoComplete, index, show, store, update } from "./controller";
-import { purchaseRequestDetailRoute } from "./detail/route";
-import { purchaseRequestSettingRoute } from "./setting/route";
-import { purchaseRequestPersetujuanRoute } from "./persetujuan/route";
 
-const router = Router().use(auth);
+// import { cetak, destroy, getAutoComplete, index, show, store, update } from "./controller";
+// import { purchaseRequestDetailRoute } from "./detail/route";
+// import { purchaseRequestSettingRoute } from "./setting/route";
+// import { purchaseRequestPersetujuanRoute } from "./persetujuan/route";
 
-router.use("/detail", purchaseRequestDetailRoute);
-router.use("/setting", purchaseRequestSettingRoute);
-router.use("/persetujuan", purchaseRequestPersetujuanRoute);
+// const router = Router().use(auth);
 
-router.get("/:id/cetak", cetak);
-router.get("/:id", show);
-router.get("/", index);
-router.post("/", store);
-router.patch("/:id", update);
-router.delete("/:id", destroy);
+// router.use("/detail", purchaseRequestDetailRoute);
+// router.use("/setting", purchaseRequestSettingRoute);
+// router.use("/persetujuan", purchaseRequestPersetujuanRoute);
 
-router.get("/option/all", getAutoComplete);
+// router.get("/:id/cetak", cetak);
+// router.get("/:id", show);
+// router.get("/", index);
+// router.post("/", store);
+// router.patch("/:id", update);
+// router.delete("/:id", destroy);
 
-export { router as purchaseRequestRoute };
+// router.get("/option/all", getAutoComplete);
+
+// export { router as purchaseRequestRoute };

@@ -1,12 +1,13 @@
-import { Router } from "express";
-import { auth } from "../../middleware/authMiddleware";
-import { upload } from "../../middleware/uploadMiddleware";
-import { destroy, store } from "./controller";
+// import { Router } from "express";
 
-export const router = Router();
+// import { upload } from "../../middleware/uploadMiddleware";
+// import { destroy, store } from "./controller";
 
-router.post("/", upload.single("file"), store);
-// router.post("/", upload.array("file", 5), store);
-router.delete("/:filename", destroy);
+// export const router = Router();
 
-export { router as uploadRoute };
+// router.post("/", upload.single("file"), store);
+// // router.post("/", upload.array("file", 5), store);
+// router.delete("/:filename", destroy);
+
+// export { router as uploadRoute };
+ 
