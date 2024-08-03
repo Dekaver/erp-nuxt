@@ -1,17 +1,21 @@
-import { type NewUsers, type UpdateUsers, type Users } from './../server/databases/user/schema';
-import { ref, reactive, type Reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import _ from 'lodash';
+import type { NewPengguna, Pengguna, UpdatePengguna } from '../server/api/pengguna/schema';
 
 export default function userCrud() {
-    const users: Ref<Users[]> = ref([]);
+    const users: Ref<Pengguna[]> = ref([]);
 
-    const emptyFormTemplate: { [K in keyof NewUsers]: NewUsers[K] | null } = {
-        username: null,
-        email: null,
-        password: null,
-        avatar: null,
+    const emptyFormTemplate: { [K in keyof NewPengguna]: NewPengguna[K] | null } = {
+        usernamenya: null,
+        passwordnya: null,
         id: undefined,
-        created_at: undefined,
+        id_pegawai: null,
+        dibuat: undefined,
+        loginterakhir: undefined,
+        enabled: true,
+        jmlogin: 0,
+        loginterbaru: undefined,
+        pinnya: null,
     };
 
     const user = reactive(emptyFormTemplate);
@@ -19,7 +23,7 @@ export default function userCrud() {
     const isFetching = ref(false);
 
     // Fetch all users
-    async function fetchUsers() {
+    async function fetchPengguna() {
         isFetching.value = true;
         errors.value = null;
         try {
@@ -33,19 +37,17 @@ export default function userCrud() {
     }
 
     // Create a new user
-    async function createUser(newUser: NewUsers) {
+    async function createUser(newUser: NewPengguna) {
         isFetching.value = true;
         errors.value = null;
         try {
-            user.created_at = undefined
             const response: any = await $fetch('/api/user', {
                 method: 'POST',
                 body: newUser,
             });
             users.value.push(response.data);
             user.id = undefined; // Clear form data after creation
-            user.username = '';
-            user.email = '';
+            user.usernamenya = '';
         } catch (err: any) {
             errors.value = err;
         } finally {
@@ -54,7 +56,7 @@ export default function userCrud() {
     }
 
     // Update an existing user
-    async function updateUser(id: number, updatedUser: UpdateUsers) {
+    async function updateUser(id: number, updatedUser: UpdatePengguna) {
         isFetching.value = true;
         errors.value = null;
         try {
@@ -91,9 +93,8 @@ export default function userCrud() {
     // Clear user form data
     function clearUserForm() {
         user.id = undefined;
-        user.username = '';
-        user.email = '';
-        user.password = '';
+        user.usernamenya = '';
+        user.passwordnya = '';
         return user;
     }
 
@@ -102,7 +103,7 @@ export default function userCrud() {
         user,
         errors,
         isFetching,
-        fetchUsers,
+        fetchPengguna,
         createUser,
         updateUser,
         deleteUser,

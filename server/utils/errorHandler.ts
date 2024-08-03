@@ -1,9 +1,15 @@
 import { type H3Event, type EventHandlerRequest } from 'h3';
-// utils/errorHandler.js
 
-const handleE = defineEventHandler((event) => {
-    return event.node.res.statusCode
-})
+export const NotFoundError = (message: string) => ({
+    name: "NotFoundError",
+    message,
+});
+
+export const ValidationError = (message: string) => ({
+    name: "ValidationError",
+    message,
+});
+
 
 export function handleError(event: H3Event<EventHandlerRequest>, error: any) {
     const formattedError = {

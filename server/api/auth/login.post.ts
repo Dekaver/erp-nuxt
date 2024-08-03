@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import { and, eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 import { ValidationError } from '../../../libs/errors';
-import { pegawai } from '../../databases/pegawai/schema';
-import { pengguna } from '../../databases/pengguna/schema';
+import { pengguna } from '../pengguna/schema';
+import { pegawai } from '../pegawai/schema';
 
 export default defineEventHandler(async (event) => {
     const { usernamenya, passwordnya } = await readBody(event);
