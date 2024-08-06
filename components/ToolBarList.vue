@@ -1,10 +1,10 @@
 <template>
     <Toolbar>
         <template v-slot:start>
-            <div class="my-2">
+            <div v-if="useNew" class="my-2" >
                 <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="FormNew" />
             </div>
-            <Button
+            <Button v-if="useFilter"
                 icon="pi pi-filter"
                 class="p-button mx-2"
                 label="Filter"
@@ -54,6 +54,10 @@ export default {
     },
     name: 'ToolBarList',
     props: {
+        useNew: {
+            type: Boolean,
+            default: true,
+        },
         usePeriode: {
             type: Boolean,
             default: false,
@@ -62,6 +66,11 @@ export default {
             type: Boolean,
             default: false,
         },
+        useFilter: {
+            type: Boolean,
+            default: true,
+        },
+
         // export
         lItem: {
             type: Array,
@@ -82,7 +91,7 @@ export default {
     },
     data() {
         return {
-            filter: true,
+            filter: false,
             f: {
                 awal: null,
                 akhir: null,
