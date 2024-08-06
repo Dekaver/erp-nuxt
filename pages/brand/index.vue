@@ -2,17 +2,7 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <Toolbar>
-                    <template v-slot:start>
-                        <div class="my-2">
-                            <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="FormNew" />
-                        </div>
-                    </template>
-
-                    <template v-slot:end>
-                        <MyExport :value="filteredItems" :selectedColumns="selectedColumns" title="Export Brand" />
-                    </template>
-                </Toolbar>
+                <ToolBarList title="Manage Brand" @new="FormNew" :useFilter="false" :useNew="$can('create', 'brand-barang')" />
 
                 <DataTableList
                     title="Manage Brand"
@@ -23,6 +13,8 @@
                     @delete="Destroy"
                     :options="{
                         primaryField: 'nama',
+                        showDelete: $can('delete', 'brand-barang'),
+                        showEdit: $can('update', 'brand-barang'),
                     }"
                 >
                     <template #columns="{ columns }">
@@ -53,7 +45,11 @@
         </div>
     </div>
 </template>
-
+<script setup>
+definePageMeta({
+    middleware: ['auth'],
+});
+</script>
 <script>
 import api from './api';
 import { z } from 'zod';
@@ -130,6 +126,7 @@ export default {
             this.isEdit = false;
         },
         FormEdit(data) {
+            if (!$can('update', 'brand-barang')) return;
             this.item = { ...data };
             this.formDialog = true;
             this.isEdit = true;
