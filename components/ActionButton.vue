@@ -8,7 +8,7 @@
                 </a>
             </template>
         </Menu>
-        <Button icon="pi pi-ellipsis-v" class="p-button-secondary p-button-outlined h-2rem w-2rem" @click="$refs[`menu_${index}`].toggle($event)"></Button>
+        <Button icon="pi pi-ellipsis-v" class="p-button-secondary p-button-outlined h-2rem w-2rem" @click="$refs[`menu_${index}`].toggle($event)" :disabled="!generateMenuItems(data).length"></Button>
     </div>
 </template>
 
