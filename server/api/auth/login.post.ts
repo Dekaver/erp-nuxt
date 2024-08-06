@@ -4,12 +4,14 @@ import jwt from 'jsonwebtoken';
 import { ValidationError } from '../../../libs/errors';
 import { pengguna } from '../pengguna/schema';
 import { pegawai } from '../pegawai/schema';
+import { getPenggunaPermissionStringById } from '../pengguna/permission/service';
 
 export default defineEventHandler(async (event) => {
     const { usernamenya, passwordnya } = await readBody(event);
 
     const [user] = await db
         .select({
+            id: pengguna.id,
             username: pengguna.usernamenya,
             password: pengguna.passwordnya,
             nama: pegawai.nama,
@@ -19,6 +21,8 @@ export default defineEventHandler(async (event) => {
         .from(pengguna)
         .innerJoin(pegawai, eq(pengguna.id_pegawai, pegawai.id))
         .where(and(eq(pengguna.usernamenya, usernamenya), eq(pengguna.enabled, true)));
+    const permission = await getPenggunaPermissionStringById(user.id);
+
     if (!user) {
         throw ValidationError('User tidak ditemukan');
     }
@@ -42,8 +46,6 @@ export default defineEventHandler(async (event) => {
         sameSite: (process.env.SAME_SITE as 'lax' | 'strict' | 'none') || 'lax', // Atau konfigurasi yang diinginkan
     });
 
-
-
     // return sendRedirect(event, '/');
-    return token;
+    return { user: payload, permission: permission.permission };
 });
