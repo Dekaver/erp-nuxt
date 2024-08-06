@@ -44,6 +44,7 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from '../store/user';
 const { loginSchema, form, errors, isFetching, loginUser, clearUserForm } = useAuth();
 //use guest layout
 definePageMeta({
@@ -53,6 +54,7 @@ useHead({
     title: 'Nuxt 3 Minimal Starter',
 });
 
+const userStore = useUserStore();
 const router = useRouter();
 const isClean = ref(true);
 const $isLoading = ref(false);
@@ -71,14 +73,16 @@ const isError = computed(() => {
 });
 
 const login = async () => {
-    console.log('===================================');
     await loginUser(form as any)
-        .then((res) => router.replace('/'))
-        .catch((err) => {
-        });
-    console.log(3);
+        .then((res: any) => {
+            userStore.setUser(res.data.user);
+            userStore.setPermission(res.data.permission);
+            router.replace('/');
+        })
+        .catch((err) => {});
 };
 </script>
+
 <style scoped>
 .p-field {
     margin-bottom: 1rem;
