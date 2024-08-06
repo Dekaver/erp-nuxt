@@ -2,6 +2,8 @@
   <div class="grid">
         <div class="col-12">
             <div class="card">
+                tes autocomplete
+                <AutoCompompleteAPI v-model="item.nama" :error="FormError?.id_pegawai" endpoint="brand" :option="{ 'id': 'badge', 'nama' : 'text' }" />
                 <Toolbar>
                     <template v-slot:start>
                         <div class="my-2">
@@ -59,6 +61,7 @@
 </template>
 
 <script lang="ts" setup>
+import AutoCompompleteAPI from '@/components/AutoCompompleteAPI.vue';
 import { z } from 'zod';
 
 // API
@@ -124,10 +127,7 @@ onMounted(async () => {
   console.log('data',data.value)
   console.log('item', lItem)
 })
-interface error {
-  nama?: string
-}
-const FormError: error | {}  = computed(() => {
+const FormError: any  = computed(() => {
   if (isClean.value) {
     return {}
   }
