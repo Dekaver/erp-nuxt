@@ -1,4 +1,13 @@
 <template>
+<!--
+    Example of usage: 
+    <AutoCompompleteAPI 
+        v-model="item.nama" 
+        :error="FormError?.id_pegawai" 
+        endpoint="brand" 
+        :option="{ 'id': 'badge', 'nama' : 'text' }" />
+
+-->
   <AutoComplete
       v-model="selectedItem"
       :placeholder="`Pilih ${prop.endpoint}`"
@@ -18,8 +27,8 @@
               <div class="w-full">
                 <div class="flex">
                   <span class="mr-4" v-for="(opt, index) in prop.option" :key="index">
-                    <Image v-if="opt == 'logo'" :src="option[index]" alt="logo" width="20" height="20" />
-                    <Badge v-if="opt == 'badge'" :value="option[index]" severity="info" />
+                    <Image v-if="opt == 'img'" :src="option[index]" alt="logo" width="20" height="20" />
+                    <Badge v-else-if="opt == 'badge'" :value="option[index]" severity="info" />
                     <span v-else>
                     {{ option[index] }}
                     </span>
