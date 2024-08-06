@@ -33,11 +33,16 @@
             </div>
         </template>
         <template #empty>
-            <div class="flex flex-column align-items-center justify-content-center relative">
+            <div v-if="$isLoading.value" class="flex gap-2">
+                <Skeleton width="10%" />
+                <Skeleton v-for="(col, index) of columnSelected" :key="col.field + '_' + index" />
+                <Skeleton width="10%" />
+            </div>
+            <div v-else class="flex flex-column align-items-center justify-content-center relative">
                 <img src="~/assets/img/empty.png" alt="" width="200" height="200" />
             </div>
         </template>
-        <Column v-if="rowNumber" header="No" headerStyle="width:1%;" style="text-align: center" frozen>
+        <Column v-if="rowNumber" header="No" headerStyle="width:1%;" style="text-align: right" frozen>
             <template #body="slotProps">
                 {{ page * rows + slotProps.index + 1 }}
             </template>
@@ -63,13 +68,13 @@
                     {{ formatDate(data[field]) }}
                 </div>
                 <div v-else-if="col.type == 'month'">
-                    {{ formatTime(data[field], 'MM-YYYY') }}
+                    {{ formatDate(data[field], 'MM-YYYY') }}
                 </div>
                 <div v-else-if="col.type == 'time'">
-                    {{ formatTime(data[field], 'LLL') }}
+                    {{ formatDate(data[field], 'LLL') }}
                 </div>
                 <div v-else-if="col.type == 'currency'" class="text-right">
-                    {{ formatNumber(data[field], {style: 'currency', currency: 'IDR'}) }}
+                    {{ formatNumber(data[field]) }}
                 </div>
                 <div v-else-if="col.type == 'number'" class="text-right">{{ formatNumber(data[field]) }}</div>
                 <div v-else-if="col.type == 'percent'" class="text-right">{{ formatNumber(data[field]) }}%</div>
@@ -181,7 +186,7 @@ export default {
         options: {
             type: Object,
             default: () => {
-                return {};
+                return {}
             },
         },
     },
@@ -190,18 +195,13 @@ export default {
             item: {},
             selectedRow: null,
             deleteDialog: false,
-            filters: {
-                global: { value: null, matchMode: 'contains' },
-            },
+            filters: {},
             page: 0,
             rows: 10,
             option: {
                 size: 'small',
                 // Show Action
-                showDelete: {
-                    key: 'status',
-                    value: ['D'],
-                },
+                showDelete: true,
                 showEdit: true,
                 showPrint: false,
                 showJurnal: false,
@@ -242,54 +242,62 @@ export default {
                 ],
             },
             columnSelected: [],
-        };
+        }
+    },
+    created() {
+        this.initFilters()
     },
     mounted() {
-        this.columnSelected = this.selectedColumns && this.selectedColumns.length > 0 ? this.columns.filter((item) => [...this.selectedColumns].includes(item.field)) : this.columns;
+        this.columnSelected = this.selectedColumns && this.selectedColumns.length > 0 ? this.columns.filter((item) => [...this.selectedColumns].includes(item.field)) : this.columns
     },
     watch: {
         columnSelected(val) {
             this.$emit(
                 'update:selectedColumns',
-                val.map((item) => item.field)
-            );
+                val.map((item) => item.field),
+            )
         },
     },
     methods: {
         // Filter
+        initFilters() {
+            this.filters = {
+                global: { value: null, matchMode: 'contains' },
+            }
+        },
 
         // Pagination
         onPage(event) {
-            this.page = event.page;
+            this.page = event.page
         },
         onRowsChange(value) {
-            this.rows = value;
+            this.rows = value
         },
 
         // Action Emit
         onRowDblclick(event) {
-            this.FormEdit(event.data);
+            this.FormEdit(event.data)
         },
         confirmDelete(data) {
-            this.deleteDialog = true;
-            this.item = data;
+            this.deleteDialog = true
+            this.item = data
         },
         FormEdit(data) {
-            this.$emit('edit', data);
+            this.$emit('edit', data)
         },
         FormDelete(data) {
-            this.$emit('delete', data);
-            this.item = {};
-            this.deleteDialog = false;
+            this.$emit('delete', data)
+            this.item = {}
+            this.deleteDialog = false
         },
         FormPrint(data) {
-            this.$emit('print', data);
+            this.$emit('print', data)
         },
         FormJurnal(data) {
-            this.$emit('jurnal', data);
+            this.$emit('jurnal', data)
         },
         FormDuplicate(data) {
-            this.$emit('duplicate', data);
+            this.$emit('duplicate', data)
         },
         // ActionButton
         /**
@@ -300,22 +308,29 @@ export default {
          */
 
         showDelete(data) {
-            return typeof this.option.showDelete == 'boolean' || !this.columns.find((item) => item.field == this.option.showDelete.key)
-                ? this.option.showDelete
-                : [...this.option.showDelete.value].includes(data[this.option.showDelete.key]);
+            // this.columns.find((item) => item.field == this.option.showDelete.key)
+            // cek status
+            const status = typeof data.status == 'string'
+            // cek draft
+            const isDraft = data.status == 'D'
+            return typeof this.option.showDelete == 'boolean'
+                ? status
+                    ? this.option.showDelete && isDraft
+                    : this.option.showDelete
+                : [...this.option.showDelete.value].includes(data[this.option.showDelete.key]) && this.option.showDelete.permission === true
         },
         showEdit(data) {
-            return typeof this.option.showEdit == 'boolean' ? this.option.showEdit : [...this.option.showEdit.value].includes(data[this.option.showEdit.key]);
+            return typeof this.option.showEdit == 'boolean' ? this.option.showEdit : [...this.option.showEdit.value].includes(data[this.option.showEdit.key])
         },
         showPrint(data) {
-            return typeof this.option.showPrint == 'boolean' ? this.option.showPrint : [...this.option.showPrint.value].includes(data[this.option.showPrint.key]);
+            return typeof this.option.showPrint == 'boolean' ? this.option.showPrint : [...this.option.showPrint.value].includes(data[this.option.showPrint.key])
         },
         showJurnal(data) {
-            return typeof this.option.showJurnal == 'boolean' ? this.option.showJurnal : [...this.option.showJurnal.value].includes(data[this.option.showJurnal.key]);
+            return typeof this.option.showJurnal == 'boolean' ? this.option.showJurnal : [...this.option.showJurnal.value].includes(data[this.option.showJurnal.key])
         },
         showDuplicate(data) {
-            return typeof this.option.showDuplicate == 'boolean' ? this.option.showDuplicate : [...this.option.showDuplicate.value].includes(data[this.option.showDuplicate.key]);
+            return typeof this.option.showDuplicate == 'boolean' ? this.option.showDuplicate : [...this.option.showDuplicate.value].includes(data[this.option.showDuplicate.key])
         },
     },
-};
+}
 </script>
