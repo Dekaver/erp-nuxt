@@ -3,7 +3,7 @@ import { type H3Event } from 'h3';
 
 export interface User {
     id: number;
-    username: string;
+    usernamenya: string;
     email: string;
     // Tambahkan properti lain sesuai kebutuhan
 }
