@@ -1,9 +1,7 @@
-import { RequestWithUser, User } from './../utils/helpers';
-import jwt, { decode } from 'jsonwebtoken';
-import { defineEventHandler } from 'h3';
-import { IncomingMessage } from 'http';
-import { getCookie } from 'h3';
+import { defineEventHandler, getCookie } from 'h3';
+import jwt from 'jsonwebtoken';
 import config from '../../libs/config';
+import { RequestWithUser, User } from './../utils/helpers';
 
 export default defineEventHandler(async (event) => {
     const publicRoutes = ['/api/auth/login', '/api/auth/login-google', '/login', '/api/auth/register', '/register'];
