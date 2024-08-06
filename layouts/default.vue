@@ -6,12 +6,18 @@
                     <img id="app-logo" alt="poseidon-layout" :src="'layout/images/logo-poseidon.png'" class="mr-4" style="width: auto; height: 40px" />
                 </NuxtLink>
                 <NuxtLink to="/">
-                    <img id="app-logo2" alt="poseidon-layout" :src="'/layout/images/tw-logo.jpg'" class="mr-4" style="width: auto; height: 40px; border-left: 1px solid lightgrey; padding-left: 1rem" />
+                    <img
+                        id="app-logo2"
+                        alt="poseidon-layout"
+                        :src="'/layout/images/tw-logo.jpg'"
+                        class="mr-4"
+                        style="width: auto; height: 40px; border-left: 1px solid lightgrey; padding-left: 1rem"
+                    />
                 </NuxtLink>
             </template>
             <template #end>
                 <div class="flex align-items-center gap-2">
-                    <span class="hidden lg:inline text-right">Admin</span>
+                    <span class="hidden lg:inline text-right">{{ userStore.nama }}</span>
                     <Avatar
                         image="/layout/images/avatar1.png"
                         shape="circle"
@@ -43,15 +49,25 @@
     </div>
 </template>
 <script>
+const userPermissions = usePermissions();
+
+const router = useRouter();
+
 useHead({
     bodyAttrs: { class: 'main-body' },
 });
 
 export default {
     layout: 'default',
+    setup() {
+        const userStore = useUserStore();
+        const abilityStore = useAbilityStore();
+        return { userStore, abilityStore };
+    },
     data() {
         return {
             menubar: null,
+            userStore: useUserStore(),
             avatar_items: [
                 { label: 'Profile', icon: 'pi pi-user', url: '/profil' },
                 { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.logOut() },
@@ -59,9 +75,20 @@ export default {
         };
     },
     mounted() {
-        this.getMenu();
+        this.getPengguna().then(() => {
+            this.getMenu();
+        });
     },
     methods: {
+        async getPengguna() {
+            try {
+                const { data } = await useAsyncData('user', () => this.userStore.checkAuth());
+                this.abilityStore.updatePermission(data.value.permission.split(','));
+                userPermissions.value = data.value.permission.split(',');
+            } catch (error) {
+                router.replace('/login');
+            }
+        },
         getMenu() {
             this.menubar = [
                 {
@@ -483,17 +510,17 @@ export default {
 @import '@/assets/css/layout-light.css';
 </style>
 <style>
-*{
+* {
     font-family: 'nunito', sans-serif;
 }
 
-.field input{
+.field input {
     width: 100%;
 }
-.field .p-autocomplete{
+.field .p-autocomplete {
     width: 100%;
 }
-.field .p-component{
+.field .p-component {
     width: 100%;
 }
 
