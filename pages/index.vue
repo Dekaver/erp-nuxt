@@ -9,7 +9,7 @@
 <script setup lang="ts">
 const ability = useAbilityStore();
 definePageMeta({
-    middleware: ['auth', 'nuxt-permissions'],
+    middleware: ['nuxt-permissions'],
     permissions: ['setting'],
 });
 </script>

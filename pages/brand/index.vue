@@ -45,11 +45,6 @@
         </div>
     </div>
 </template>
-<script setup>
-definePageMeta({
-    middleware: ['auth'],
-});
-</script>
 <script>
 import api from './api';
 import { z } from 'zod';
