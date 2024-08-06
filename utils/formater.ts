@@ -56,9 +56,9 @@ export const formatNumber = (value = 0, options?: Intl.NumberFormatOptions) => {
 	return formatter.format(value);
 };
 
-export const formatNumberCurrency = function (value: number) {
-	const val = value || "0";
-	return parseFloat(val as string).toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+import { useUserStore } from '../stores/user';
+export const formatNumberCurrency = function () {
+	return useUserStore();
 };
 
 
