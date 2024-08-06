@@ -6,7 +6,7 @@
                     <img id="app-logo" alt="poseidon-layout" :src="'layout/images/logo-poseidon.png'" class="mr-4" style="width: auto; height: 40px" />
                 </NuxtLink>
                 <NuxtLink to="/">
-                    <img id="app-logo" alt="poseidon-layout" :src="'/layout/images/tw-logo.jpg'" class="mr-4" style="width: auto; height: 40px; border-left: 1px solid lightgrey; padding-left: 1rem" />
+                    <img id="app-logo2" alt="poseidon-layout" :src="'/layout/images/tw-logo.jpg'" class="mr-4" style="width: auto; height: 40px; border-left: 1px solid lightgrey; padding-left: 1rem" />
                 </NuxtLink>
             </template>
             <template #end>
@@ -43,8 +43,6 @@
     </div>
 </template>
 <script>
-const router = useRouter();
-
 useHead({
     bodyAttrs: { class: 'main-body' },
 });
@@ -485,9 +483,20 @@ export default {
 @import '@/assets/css/layout-light.css';
 </style>
 <style>
+*{
+    font-family: 'nunito', sans-serif;
+}
+
 .field input{
     width: 100%;
 }
+.field .p-autocomplete{
+    width: 100%;
+}
+.field .p-component{
+    width: 100%;
+}
+
 .p-menuitem-active .p-submenu-list {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);

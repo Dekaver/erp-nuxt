@@ -1,19 +1,19 @@
-import { and, eq, getTableColumns, is, isNull, ne, or } from "drizzle-orm";
-import { alias } from "drizzle-orm/pg-core";
-import { agama } from "../agama/schema";
-import { departemen } from "../departemen/schema";
-import { provinces, cities, districts } from "../indo/schema";
-import { jabatan } from "../jabatan/schema";
-import { pengguna } from "../pengguna/schema";
-import { pegawai, Pegawai, NewPegawai, PegawaiColumns } from "./schema";
+import { and, eq, getTableColumns, ilike, is, isNull, ne, notExists, or, SQL } from 'drizzle-orm';
+import { alias } from 'drizzle-orm/pg-core';
+import { agama } from '../agama/schema';
+import { departemen } from '../departemen/schema';
+import { provinces, cities, districts } from '../indo/schema';
+import { jabatan } from '../jabatan/schema';
+import { pengguna } from '../pengguna/schema';
+import { pegawai, Pegawai, NewPegawai, PegawaiColumns } from './schema';
 
 export const getPegawai = async (tx = db) => {
-    const provinsi_ktp = alias(provinces, "provinsi_ktp");
-    const kabupaten_ktp = alias(cities, "kabupaten_ktp");
-    const kecamatan_ktp = alias(districts, "kecamatan_ktp");
-    const provinsi_domisili = alias(provinces, "provinsi_domisili");
-    const kabupaten_domisili = alias(cities, "kabupaten_domisili");
-    const kecamatan_domisili = alias(districts, "kecamatan_domisili");
+    const provinsi_ktp = alias(provinces, 'provinsi_ktp');
+    const kabupaten_ktp = alias(cities, 'kabupaten_ktp');
+    const kecamatan_ktp = alias(districts, 'kecamatan_ktp');
+    const provinsi_domisili = alias(provinces, 'provinsi_domisili');
+    const kabupaten_domisili = alias(cities, 'kabupaten_domisili');
+    const kecamatan_domisili = alias(districts, 'kecamatan_domisili');
     const data = await tx
         .select({
             ...PegawaiColumns,
@@ -40,13 +40,13 @@ export const getPegawai = async (tx = db) => {
     return data;
 };
 
-export const getPegawaiById = async (params: Pegawai["id"], tx = db) => {
-    const provinsi_ktp = alias(provinces, "provinsi_ktp");
-    const kabupaten_ktp = alias(cities, "kabupaten_ktp");
-    const kecamatan_ktp = alias(districts, "kecamatan_ktp");
-    const provinsi_domisili = alias(provinces, "provinsi_domisili");
-    const kabupaten_domisili = alias(cities, "kabupaten_domisili");
-    const kecamatan_domisili = alias(districts, "kecamatan_domisili");
+export const getPegawaiById = async (params: Pegawai['id'], tx = db) => {
+    const provinsi_ktp = alias(provinces, 'provinsi_ktp');
+    const kabupaten_ktp = alias(cities, 'kabupaten_ktp');
+    const kecamatan_ktp = alias(districts, 'kecamatan_ktp');
+    const provinsi_domisili = alias(provinces, 'provinsi_domisili');
+    const kabupaten_domisili = alias(cities, 'kabupaten_domisili');
+    const kecamatan_domisili = alias(districts, 'kecamatan_domisili');
     const PegawaiColumns = getTableColumns(pegawai);
     const data = await tx
         .select({
@@ -78,17 +78,32 @@ export const getPegawaiById = async (params: Pegawai["id"], tx = db) => {
     return data[0];
 };
 
-export const getOptionPegawai = async (tx = db) => {
-    const data = await tx
+export const getOptionPegawai = async (params: any, tx = db) => {
+    const conditions: SQL[] = [];
+    const search: SQL[] = [];
+    const query = tx
         .select({
             id: pegawai.id,
             nama: pegawai.nama,
             jabatan: pegawai.id_jabatan,
             departemen: pegawai.id_departemen,
         })
-        .from(pegawai)
-        .where(eq(pegawai.status, true));
-    return data;
+        .from(pegawai);
+    conditions.push(eq(pegawai.status, true));
+    if (params.search) {
+        search.push(ilike(pegawai.nama, `%${escapePostgresString(params.search)}%`));
+        search.push(ilike(pegawai.email, `%${escapePostgresString(params.search)}%`));
+        search.push(ilike(pegawai.hp, `%${escapePostgresString(params.search)}%`));
+        search.push(ilike(pegawai.nama_panggilan, `%${escapePostgresString(params.search)}%`));
+        search.push(ilike(pegawai.nip, `%${escapePostgresString(params.search)}%`));
+    }
+    if (params.module == 'pengguna') {
+        conditions.push(notExists(tx.select().from(pengguna).where(eq(pegawai.id, pengguna.id_pegawai))));
+    }
+    return query
+        .where(and(...conditions, or(...search)))
+        .orderBy(pegawai.nama)
+        .limit(params.limit);
 };
 
 export const getAvailablePegawai = async (tx = db) => {
@@ -105,7 +120,7 @@ export const getAvailablePegawai = async (tx = db) => {
     return data;
 };
 
-export const getPegawaiByIdJabatan = async (id_jabatan: Pegawai["id_jabatan"], tx = db) => {
+export const getPegawaiByIdJabatan = async (id_jabatan: Pegawai['id_jabatan'], tx = db) => {
     return await tx
         .select({
             ...PegawaiColumns,
@@ -116,10 +131,10 @@ export const getPegawaiByIdJabatan = async (id_jabatan: Pegawai["id_jabatan"], t
         .where(eq(pegawai.id_jabatan, id_jabatan as number));
 };
 
-export const getPegawaiHeadDepartemen = async (id: Pegawai["id"], tx = db) => {
+export const getPegawaiHeadDepartemen = async (id: Pegawai['id'], tx = db) => {
     const dataPegawai = await getPegawaiById(id, tx);
     if (dataPegawai.id_departemen == null) {
-        throw ValidationError("Pegawai ini belum ada di departemen apapun");
+        throw ValidationError('Pegawai ini belum ada di departemen apapun');
     }
     const lPegawai = await tx
         .select({
@@ -148,7 +163,7 @@ export const createPegawai = async (form: NewPegawai, tx = db) => {
             .from(pegawai)
             .where(or(eq(pegawai.nip, form.nip), eq(pegawai.nik_ktp, form.nik_ktp)));
         if (check) {
-            throw ValidationError("NIP atau NIK KTP sudah harus unik");
+            throw ValidationError('NIP atau NIK KTP sudah harus unik');
         }
         const [data] = await trx.insert(pegawai).values(form).returning();
         return data;
@@ -156,7 +171,7 @@ export const createPegawai = async (form: NewPegawai, tx = db) => {
     return data;
 };
 
-export const updatePegawai = async (params: NewPegawai["id"], form: NewPegawai, tx = db) => {
+export const updatePegawai = async (params: NewPegawai['id'], form: NewPegawai, tx = db) => {
     const data = await tx.transaction(async (trx) => {
         const [check] = await trx
             .select({
@@ -165,7 +180,7 @@ export const updatePegawai = async (params: NewPegawai["id"], form: NewPegawai, 
             .from(pegawai)
             .where(and(ne(pegawai.id, params as number), or(eq(pegawai.nip, form.nip), eq(pegawai.nik_ktp, form.nik_ktp))));
         if (check) {
-            throw ValidationError("NIP atau NIK KTP sudah harus unik");
+            throw ValidationError('NIP atau NIK KTP sudah harus unik');
         }
         const [data] = await trx
             .update(pegawai)
@@ -177,7 +192,7 @@ export const updatePegawai = async (params: NewPegawai["id"], form: NewPegawai, 
     return data;
 };
 
-export const deletePegawai = async (params: Pegawai["id"], tx = db) => {
+export const deletePegawai = async (params: Pegawai['id'], tx = db) => {
     const data = await tx.transaction(async (tx) => {
         const [check] = await tx
             .select({
@@ -186,7 +201,7 @@ export const deletePegawai = async (params: Pegawai["id"], tx = db) => {
             .from(pengguna)
             .where(eq(pengguna.id_pegawai, params));
         if (check) {
-            throw ValidationError("Pegawai sudah terdaftar sebagai pengguna");
+            throw ValidationError('Pegawai sudah terdaftar sebagai pengguna');
         }
         const [data] = await tx.delete(pegawai).where(eq(pegawai.id, params)).returning();
         return data;
@@ -194,7 +209,7 @@ export const deletePegawai = async (params: Pegawai["id"], tx = db) => {
     return data;
 };
 
-export const updateFotoPegawai = async (foto: Pegawai["fotonya"], params: Pegawai["id"], tx = db) => {
+export const updateFotoPegawai = async (foto: Pegawai['fotonya'], params: Pegawai['id'], tx = db) => {
     const [data] = await tx
         .update(pegawai)
         .set({
@@ -205,7 +220,7 @@ export const updateFotoPegawai = async (foto: Pegawai["fotonya"], params: Pegawa
     return data;
 };
 
-export const getFotoPegawai = async (params: Pegawai["id"], tx = db) => {
+export const getFotoPegawai = async (params: Pegawai['id'], tx = db) => {
     const [data] = await tx
         .select({
             fotonya: pegawai.fotonya,

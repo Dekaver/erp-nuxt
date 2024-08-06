@@ -1,11 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: { enabled: true },
-    modules: ['@primevue/nuxt-module','@pinia/nuxt', '@nuxtjs/tailwindcss'],
+    modules: ['@primevue/nuxt-module', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
 
     // PRIMEVUE
     primevue: {
         // importTheme: { from: '@primevue/themes/aura' },
+        autoImport: false, // disable auto import
         importTheme: { from: '@/theme.js' },
         usePrimeVue: true,
         options: {
@@ -15,17 +16,17 @@ export default defineNuxtConfig({
             ripple: true,
         },
         components: {
+            // Tentukan komponen yang ingin disertakan
             include: '*',
-            exclude: ['Sidebar'],
-        },
-        composables: {
-            include: ['useStyle'],
+            exclude: ['Calendar', 'Carousel', 'DatePicker'],
+
         },
         directives: {
-            prefix: '',
+            // Tentukan directive yang ingin disertakan
             include: ['Ripple'],
         },
     },
+
     // TAILWIND
     tailwindcss: {
         cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
@@ -42,9 +43,7 @@ export default defineNuxtConfig({
         disableVuex: true,
         storesDirs: ['stores'],
     },
-    // SOCKET
     
-
     // OTHER
     plugins: ['~/plugins/global-variable.js'],
     ssr: false,

@@ -1,5 +1,6 @@
+import bcrypt from 'bcrypt';
 import { insertPenggunaSchema } from './schema';
-import { createPengguna } from './service';
+import { createPengguna, getPenggunaById } from './service';
 
 export default eventHandler(async (event) => {
     const body = await readBody(event);

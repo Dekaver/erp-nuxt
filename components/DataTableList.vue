@@ -21,7 +21,7 @@
         scrollable
     >
         <template v-if="showHeader" #header>
-            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <div class="flex flex-col md:flex-row justify-between items-center">
                 <h5 class="m-0">{{ title }}</h5>
                 <div class="flex gap-2 col-12 md:col-5 ml-auto">
                     <IconField iconPosition="left" class="block p-input-icon-left w-full">
@@ -37,7 +37,7 @@
                 <img src="~/assets/img/empty.png" alt="" width="200" height="200" />
             </div>
         </template>
-        <Column v-if="rowNumber" header="No" headerStyle="width:1%;" style="text-align: right" frozen>
+        <Column v-if="rowNumber" header="No" headerStyle="width:1%;" style="text-align: center" frozen>
             <template #body="slotProps">
                 {{ page * rows + slotProps.index + 1 }}
             </template>
@@ -69,7 +69,7 @@
                     {{ formatTime(data[field], 'LLL') }}
                 </div>
                 <div v-else-if="col.type == 'currency'" class="text-right">
-                    {{ formatCurrency(data[field]) }}
+                    {{ formatNumber(data[field], {style: 'currency', currency: 'IDR'}) }}
                 </div>
                 <div v-else-if="col.type == 'number'" class="text-right">{{ formatNumber(data[field]) }}</div>
                 <div v-else-if="col.type == 'percent'" class="text-right">{{ formatNumber(data[field]) }}%</div>
@@ -105,19 +105,19 @@
     </DataTable>
     <!-- Confirm Dialog -->
     <Dialog v-model:visible="deleteDialog" style="width: 450px" header=" " :modal="true">
-        <div class="flex flex-wrap gap-2 align-middle justify-center">
+        <div class="flex flex-col gap-2 items-center justify-center">
             <img src="~/assets/img/confirm_delete.svg" alt="" width="250" />
             <span class="text-center">
                 Are you sure you want to delete
                 <br />
                 <b class="text-xl">{{ item[option.primaryField] }}?</b>
             </span>
-            <span>You can't undo this action.</span>
+            <span class="text-red-500 font-bold">You can't undo this action.</span>
         </div>
         <template #footer>
-            <div class="flex flex-wrap align-middle justify-center">
-                <Button label="No" severity="secondary" @click="deleteDialog = false" class="w-full" autofocus />
-                <Button label="Yes" severity="danger" @click="FormDelete(item)" class="col" />
+            <div class="flex items-center justify-center w-full gap-2">
+                <Button label="No" severity="secondary" @click="deleteDialog = false" class="flex-1" autofocus />
+                <Button label="Yes" severity="danger" @click="FormDelete(item)" class="flex-1" />
             </div>
         </template>
     </Dialog>

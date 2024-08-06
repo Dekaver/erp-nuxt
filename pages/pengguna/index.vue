@@ -2,25 +2,15 @@
     <div class="grid">
         <div class="col-12">
             <div class="card">
-                <Toolbar>
-                    <template v-slot:start>
-                        <div class="my-2">
-                            <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="FormNew" />
-                        </div>
-                    </template>
-
-                    <template v-slot:end>
-                        <MyExport :value="filteredItems" :selectedColumns="selectedColumns" title="Export Purchase Order" />
-                    </template>
-                </Toolbar>
-
+                <ToolBarList @new="FormNew" use-periode use-status />
+                <br />
                 <DataTableList
                     title="Manage Pengguna"
-                    :value="lItem"
+                    :value="lpengguna"
                     v-model:selectedColumns="selectedColumns"
                     :columns="columns"
                     @edit="FormEdit"
-                    @delete="Destroy"
+                    @delete="FormDelete"
                     @hak-akses="FormHakAkses"
                     :options="{
                         primaryField: 'usernamenya',
@@ -29,44 +19,43 @@
                                 label: 'Hak Akses.',
                                 icon: 'pi pi-lock',
                                 action: 'hak-akses',
-                                command: (data) => FormHakAkses(data),
+                                command: (data : Pengguna) => FormHakAkses(data),
                             },
                         ],
                     }"
                 >
                     <template #columns="{ columns }">
-                        <Column v-if="columns.some((col) => col.field === 'is_customer')" header="IS Customer" field="is_customer">
+                        <Column v-if="columns.some((col: any) => col.field === 'is_customer')" header="IS Customer" field="is_customer">
                             <template #body="{ data }">
                                 <Tag icon="pi pi-check" v-if="data.is_customer" severity="success" value="Yes" />
                                 <Tag icon="pi pi-times" v-else severity="danger" value="No" />
                             </template>
-                        </Column>
-                    </template>
-                </DataTableList>
+                        </Column> </template
+                ></DataTableList>
+                || {{ status }} ||
 
                 <!-- Dialog -->
                 <Dialog v-model:visible="formDialog" :style="{ width: '720px' }" header="Detail Pengguna" :modal="true" maximizable class="p-fluid">
                     <div class="formgrid grid">
                         <div class="field col-6">
                             <Label for="id">Username</Label>
-                            <InputText id="id" v-model.trim="item.usernamenya" required="true" autofocus :class="FormError.usernamenya && 'p-invalid'" />
-                            <ErrorMsg :error="FormError.usernamenya" />
+                            <InputText id="id" v-model.trim="pengguna.usernamenya" required="true" autofocus :class="FormError?.usernamenya && 'p-invalid'" />
+                            <ErrorMsg :error="FormError?.usernamenya" />
                         </div>
                         <div class="field col-6">
                             <label for="id" v-if="isEdit">New Password</label>
                             <label for="id" v-else>Password</label>
-                            <InputText id="id" v-model.trim="item.passwordnya" type="password" required="true" autofocus :class="FormError.passwordnya && 'p-invalid'" />
-                            <ErrorMsg :error="FormError.passwordnya" />
+                            <InputText id="id" v-model.trim="pengguna.passwordnya" type="password" required="true" autofocus :class="FormError?.passwordnya && 'p-invalid'" />
+                            <ErrorMsg :error="FormError?.passwordnya" />
                         </div>
                         <div class="field col-6">
                             <label for="pegawai">Pegawai</label>
-                            <AutoCompletePegawai v-model="item.id_pegawai" :error="FormError.id_pegawai" />
-                            <ErrorMsg :error="FormError.id_pegawai" />
+                            <AutoCompletePegawai v-model="pengguna.id_pegawai!" :error="FormError?.id_pegawai" :options="{ module: 'pengguna' }" />
                         </div>
                     </div>
                     <template #footer>
-                        <Button label="Save" icon="pi pi-check" class="p-button-primary" @click="Save" />
-                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="HideDialog" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-primary" @click="Save" :loading="isFetching" />
+                        <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="formDialog = false" :loading="isFetching" />
                     </template>
                 </Dialog>
             </div>
@@ -74,164 +63,105 @@
     </div>
 </template>
 
-<script>
-import api from './api';
+<script setup lang="ts">
+const { lpengguna, pengguna, errors, status, isFetching, fetchPengguna, createPengguna, updatePengguna, deletePengguna, clearPenggunaForm } = usePengguna();
+import { type Pengguna } from '@/server/api/pengguna/schema';
 import { z } from 'zod';
 
-const BaseSchema = z.object({
-    usernamenya: z.string(),
-    passwordnya: z.string(),
-    // id_pegawai: z.number(),
+const router = useRouter();
+// helper
+const isClean = ref(true);
+const isEdit = ref(false);
+const formDialog = ref(false);
+
+const columns = [
+    { header: 'Nama', field: 'nama', class: 'w-20rem' },
+    { header: 'Jabatan', field: 'jabatan', class: 'w-20rem' },
+    { header: 'Username', field: 'usernamenya', class: 'w-20rem' },
+    { header: 'Email', field: 'email', class: 'w-20rem' },
+    { header: 'Aktif', field: 'enabled', class: 'w-20rem' },
+    { header: 'Di Buat', field: 'dibuat', class: 'w-20rem', type: 'date' },
+    { header: 'Login Terakhir', field: 'loginterakhir', class: 'w-20rem', type: 'date' },
+    { header: 'Is Customer', field: 'is_customer', class: 'w-20rem' },
+];
+
+const selectedColumns = reactive<string[]>(['nama', 'jabatan', 'usernamenya', 'email']);
+
+// Form Error
+const FormSchema = z
+    .object({
+        id_pegawai: z.string().nullish(),
+        usernamenya: z.string().min(1, { message: 'Username is required' }),
+        email: z.string().email({ message: 'Email is not valid' }),
+    })
+    .extend({
+        passwordnya: z.string().nullish(),
+    });
+
+const FormError = computed(() => {
+    if (isClean.value) {
+        return;
+    }
+    return FormSchema.safeParse(pengguna).error?.format();
+});
+const isError = computed(() => {
+    return Object.keys(FormError.value || {}).length > 0;
 });
 
-export default {
-    data() {
-        return {
-            // data
-            lItem: [],
-            item: {},
-            selectedItem: null,
+// mounted
+onMounted(() => {
+    getData();
+});
 
-            // table
-            selectedColumns: ['usernamenya', 'jabatan', 'nama', 'enabled'],
-            columns: [
-                { header: 'Nama', field: 'nama', class: 'w-20rem' },
-                { header: 'Jabatan', field: 'jabatan', class: 'w-20rem' },
-                { header: 'Username', field: 'usernamenya', class: 'w-20rem' },
-                { header: 'Email', field: 'email', class: 'w-20rem' },
-                { header: 'Aktif', field: 'enabled', class: 'w-20rem' },
-                { header: 'Di Buat', field: 'dibuat', class: 'w-20rem', type: 'date' },
-                { header: 'Login Terakhir', field: 'loginterakhir', class: 'w-20rem', type: 'date' },
-                { header: 'Is Customer', field: 'is_customer', class: 'w-20rem' },
-            ],
+const getData = async () => {
+    await fetchPengguna();
+};
 
-            filters: {
-                global: { value: null, matchMode: 'contains' },
-            },
+// Form
+const FormNew = () => {
+    setLoading(true);
+    clearPenggunaForm();
+    isClean.value = true;
+    formDialog.value = true;
+    isEdit.value = false;
+};
 
-            // dialog
-            isClean: true,
-            isEdit: false,
-            formDialog: false,
-            deleteFormDialog: false,
-        };
-    },
-    mounted() {
-        this.getData();
-    },
-    methods: {
-        async getData() {
-            await api.index().then((res) => {
-                this.lItem = res.data.data;
+const FormEdit = (data: Pengguna) => {
+    Object.assign(pengguna, {
+        ...data,
+        passwordnya: null,
+    });
+    isClean.value = true;
+    formDialog.value = true;
+    isEdit.value = true;
+};
+
+const FormDelete = (data: Pengguna) => {
+    deletePengguna(data.id);
+};
+
+const FormHakAkses = (data: Pengguna) => {
+    router.push(`/pengguna/${data.usernamenya}/hak-akses`);
+};
+
+const Save = async () => {
+    try {
+        isClean.value = false;
+        if (isError.value) {
+            return;
+        }
+        if (isEdit.value) {
+            await updatePengguna(pengguna.id as number, pengguna as any).then(() => {
+                isClean.value = true;
+                formDialog.value = false;
             });
-        },
-        HideDialog() {
-            this.selectedPegawai = null;
-            this.item = {};
-            this.formDialog = false;
-        },
-        FormNew() {
-            this.item = {};
-            this.formDialog = true;
-            this.isEdit = false;
-        },
-        FormEdit(data) {
-            this.oldUsernamenya = data.usernamenya;
-            this.item = { ...data };
-            this.formDialog = true;
-            this.isEdit = true;
-        },
-        FormHakAkses(item) {
-            this.$router.push({
-                name: 'hak-akses',
-                params: {
-                    id: item.id,
-                },
+        } else {
+            await createPengguna(pengguna as any).then(() => {
+                isClean.value = true;
             });
-        },
-        onRowDblclick(event) {
-            this.FormEdit(event.data);
-        },
-        FormHakAkses(data) {
-            this.$router.push({ name: 'hak-akses', params: { id: data.id } });
-        },
-        FormDelete(data) {
-            this.item = { ...data };
-            this.deleteFormDialog = true;
-        },
-        async Save() {
-            try {
-                this.isClean = false;
-                if (Object.keys(this.FormError).length > 0) {
-                    return;
-                }
-                if (this.isEdit) {
-                    await api.update(this.oldUsernamenya, this.item).then((res) => {
-                        this.$toast.add({ severity: 'success', summary: 'Successful', detail: res.data.message, life: 3000 });
-                        this.getData();
-                        this.formDialog = false;
-                    });
-                } else {
-                    await api.store(this.item).then((res) => {
-                        this.$toast.add({ severity: 'success', summary: 'Successful', detail: res.data.message, life: 3000 });
-                        this.getData();
-                        this.formDialog = false;
-                    });
-                }
-            } catch (error) {
-                if (error instanceof AxiosError) {
-                    this.$toast.add({ severity: 'error', summary: 'Failed', detail: error.response.data.message, life: 3000 });
-                }
-            } finally {
-                this.$timeoutLoading();
-            }
-        },
-        Destroy(data) {
-            this.lItem = this.lItem.filter((val) => val.usernamenya !== data.usernamenya);
-            api.destroy(data.id).then((res) => {
-                this.$toast.add({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: res.data.message,
-                    life: 3000,
-                });
-                this.getData();
-                this.deleteFormDialog = false;
-            });
-        },
-        searchRole(event) {
-            if (this.lRole == null) return;
-            setTimeout(() => {
-                if (!event.query.trim().length) {
-                    this.filteredRole = [...this.lRole];
-                } else {
-                    this.filteredRole = this.lRole.filter((Role) => {
-                        return Role.role.toLowerCase().includes(event.query.toLowerCase());
-                    });
-                }
-            }, 250);
-        },
-    },
-    computed: {
-        FormError() {
-            if (this.isClean) {
-                return {};
-            }
-            return BaseSchema.safeParse(this.item)?.error?.format() || {};
-        },
-    },
-    watch: {
-        selectedPegawai() {
-            this.item.id_pegawai = this.selectedPegawai ? this.selectedPegawai.id_pegawai : null;
-            this.item.jabatan = this.selectedPegawai ? this.selectedPegawai.jabatan : null;
-        },
-        selectedRole() {
-            this.item.role = this.selectedRole ? this.selectedRole.id : null;
-        },
-        formDialog(val) {
-            val || this.HideDialog();
-        },
-    },
+        }
+        await fetchPengguna();
+    } catch (error) {}
 };
 </script>
 

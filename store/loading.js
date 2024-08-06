@@ -18,5 +18,13 @@ export const useLoadingStore = defineStore('loading', {
       this.isLoading = false;
       this.progress = 100; // Set persentase ke 100 saat loading selesai
     },
+
+    // Menambahkan fungsi lain
+    timeoutLoading() {
+      setTimeout(() => {
+        this.isLoading = false;
+        this.progress = 100; // Set persentase ke 100 saat loading selesai
+      }, 1200);
+    },
   },
 });
