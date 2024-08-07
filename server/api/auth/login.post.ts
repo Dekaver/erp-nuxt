@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import { and, eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 import { ValidationError } from '../../../libs/errors';
-import { pengguna } from '../pengguna/schema';
-import { pegawai } from '../pegawai/schema';
+import { pengguna } from '@/databases/pengguna/schema';
+import { pegawai } from '@/databases/pegawai/schema';
 import { getPenggunaPermissionStringById } from '../pengguna/permission/service';
 
 export default defineEventHandler(async (event) => {

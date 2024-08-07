@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { insertPenggunaSchema } from './schema';
+import { insertPenggunaSchema } from '@/databases/pengguna/schema';
 import { createPengguna, getPenggunaById } from './service';
 
 export default eventHandler(async (event) => {

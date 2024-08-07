@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { getPenggunaById, updatePengguna } from "../service";
-import { updatePenggunaSchema } from '../schema';
+import { updatePenggunaSchema } from '@/databases/pengguna/schema';
 
 export default defineEventHandler(async (event) => {
     try {

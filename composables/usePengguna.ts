@@ -1,6 +1,6 @@
 import { ref, reactive } from 'vue';
 import _, { method } from 'lodash';
-import type { NewPengguna, Pengguna, UpdatePengguna } from '../server/api/pengguna/schema';
+import type { NewPengguna, Pengguna, UpdatePengguna } from '@/databases/pengguna/schema';
 
 interface ApiResponse {
     data: Pengguna[];
