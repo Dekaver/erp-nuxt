@@ -6,11 +6,11 @@
 
                 <DataTableList
                     title="Manage Brand"
-                    :value="lItem"
+                    :value="items"
                     v-model:selectedColumns="selectedColumns"
                     :columns="columns"
                     @edit="FormEdit"
-                    @delete="Destroy"
+                    @delete="FormDelete"
                     :options="{
                         primaryField: 'nama',
                         showDelete: $can('delete', 'brand-barang'),
@@ -18,7 +18,7 @@
                     }"
                 >
                     <template #columns="{ columns }">
-                        <Column v-if="columns.some((col) => col.field === 'is_customer')" header="IS Customer" field="is_customer">
+                        <Column v-if="columns.some((col:any) => col.field === 'is_customer')" header="IS Customer" field="is_customer">
                             <template #body="{ data }">
                                 <Tag icon="pi pi-check" v-if="data.is_customer" severity="success" value="Yes" />
                                 <Tag icon="pi pi-times" v-else severity="danger" value="No" />
@@ -32,8 +32,8 @@
                     <div class="formgrid flex">
                         <div class="field w-full">
                             <Label for="nama_brand">Nama Brand</Label>
-                            <InputText id="nama_brand" v-model.trim="item.nama" autofocus :class="FormError.nama && 'p-invalid'" />
-                            <ErrorMsg :error="FormError.nama" />
+                            <InputText id="nama_brand" v-model.trim="item.nama" autofocus :class="FormError?.nama && 'p-invalid'" />
+                            <ErrorMsg :error="FormError?.nama" />
                         </div>
                     </div>
                     <template #footer>
@@ -45,99 +45,80 @@
         </div>
     </div>
 </template>
-<script>
-import api from './api';
-import { z } from 'zod';
 
-const BaseSchema = z.object({
-    nama: z.string(),
+<script setup lang="ts">
+import { type Brand, insertBrandSchema } from '@/databases/brand/schema';
+
+const { item, items, isFetching, clearItemForm, fetchItems, createItem, updateItem, deleteItem } = useBrand();
+
+const router = useRouter();
+
+const isClean = ref(true);
+const isEdit = ref(false);
+const formDialog = ref(false);
+
+const columns = [{ header: 'Nama', field: 'nama', class: 'w-20rem' }];
+
+const selectedColumns = reactive<string[]>(['nama']);
+
+// Form Error
+const FormSchema = insertBrandSchema.omit({ id: true, created_by: true, updated_by: true });
+
+const FormError = computed(() => {
+    if (isClean.value) {
+        return;
+    }
+    return FormSchema.safeParse(item)?.error?.format();
 });
 
-export default {
-    data() {
-        return {
-            // data
-            lItem: [],
-            item: {},
-            selectedItem: null,
+const isError = computed(() => {
+    return Object.keys(FormError.value || {}).length > 0;
+});
 
-            // table
-            selectedColumns: [],
-            columns: [{ header: 'Nama', field: 'nama', class: 'w-20rem' }],
+// mounted
+onMounted(() => {
+    getData();
+});
 
-            // helper
-            isClean: true,
-            isEdit: false,
-            formDialog: false,
-        };
-    },
-    computed: {
-        FormError() {
-            if (this.isClean) {
-                return {};
-            }
-            return BaseSchema.safeParse(this.item)?.error?.format() || {};
-        },
-    },
-    mounted() {
-        this.getData();
-    },
-    methods: {
-        async getData() {
-            await api.index().then((res) => {
-                this.lItem = res.data;
+const getData = async () => {
+    await fetchItems();
+};
+
+// Form
+const FormNew = () => {
+    clearItemForm();
+    isClean.value = true;
+    formDialog.value = true;
+    isEdit.value = false;
+};
+
+const FormEdit = (data: any) => {
+    Object.assign(item, { ...data });
+    isClean.value = true;
+    formDialog.value = true;
+    isEdit.value = true;
+};
+const FormDelete = (data: Brand) => {
+    deleteItem(data.id);
+};
+
+const Save = async () => {
+    try {
+        isClean.value = false;
+        if (isError.value) return;
+        if (isEdit.value) {
+            await updateItem(item.id as number, item as any).then(() => {
+                isClean.value = true;
+                formDialog.value = false;
             });
-        },
-        async Save() {
-            try {
-                this.isClean = false;
-                if (Object.keys(this.FormError).length > 0) {
-                    return;
-                }
-                if (this.isEdit) {
-                    await api.update(this.item.id, this.item).then((res) => {
-                        this.$toast.add({ severity: 'success', summary: 'Successful', detail: res.message, life: 3000 });
-                        this.getData();
-                        this.formDialog = false;
-                    });
-                } else {
-                    await api.store(this.item).then((res) => {
-                        this.$toast.add({ severity: 'success', summary: 'Successful', detail: res.message, life: 3000 });
-                        this.getData();
-                        this.formDialog = false;
-                    });
-                }
-            } catch (error) {
-                if (error instanceof AxiosError) {
-                    this.$toast.add({ severity: 'error', summary: 'Failed', detail: error.response.data.message, life: 3000 });
-                }
-            } finally {
-                this.$timeoutLoading();
-            }
-        },
-        FormNew() {
-            this.item = {};
-            this.formDialog = true;
-            this.isEdit = false;
-        },
-        FormEdit(data) {
-            if (!$can('update', 'brand-barang')) return;
-            this.item = { ...data };
-            this.formDialog = true;
-            this.isEdit = true;
-        },
-        onRowDblclick(event) {
-            this.FormEdit(event.data);
-        },
-        async Destroy(data) {
-            await api.destroy(data.id).then((res) => {
-                this.lItem = this.lItem.filter((val) => val.nama !== data.nama);
-                this.$toast.add({ severity: 'success', summary: 'Successful', detail: res.data.message, life: 3000 });
-                this.getData();
+        } else {
+            await createItem(item as any).then(() => {
+                isClean.value = true;
+                formDialog.value = false;
             });
-        },
-    },
+        }
+        await fetchItems();
+    } catch (error) {}
 };
 </script>
-
 <style lang="scss" scoped></style>

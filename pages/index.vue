@@ -5,6 +5,8 @@
     {{ $can('read', 'barang') }}
     <AutoCompletePegawai ref="autoCompletePegawai"></AutoCompletePegawai>
     <Can ref="can" I="read" a="barang"> Baca Barang </Can>
+    <br>
+    <AutoCompleteBarang />
 </template>
 <script setup lang="ts">
 const ability = useAbilityStore();
