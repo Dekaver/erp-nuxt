@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { setting, type NewSetting, type Setting } from "./schema";
+import { setting, type NewSetting, type Setting } from "@/databases/setting/schema";
 
 export const getSetting = async (tx = db) => {
     const data = await tx.select().from(setting);

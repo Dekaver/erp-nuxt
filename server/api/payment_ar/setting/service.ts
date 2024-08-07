@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 
-import { NewPaymentArSetting, PaymentArSetting, UpdatePaymentArSetting, payment_ar_setting } from "./schema";
+import { NewPaymentArSetting, PaymentArSetting, UpdatePaymentArSetting, payment_ar_setting } from "@/databases/payment_ar/setting/schema";
 
 export const getPaymentArSettings = async (tx = db) => {
     const [data] = await tx.select().from(payment_ar_setting);

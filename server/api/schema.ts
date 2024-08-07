@@ -1,5 +1,5 @@
 import { integer, pgSchema, text, timestamp } from 'drizzle-orm/pg-core';
-import { pegawai } from './pegawai/schema';
+import { pegawai } from '@/server/api/pegawai/schema';
 
 export const statis = pgSchema('statis');
 

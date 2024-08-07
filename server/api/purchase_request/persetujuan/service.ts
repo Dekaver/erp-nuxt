@@ -1,8 +1,8 @@
 import { and, eq, sql } from "drizzle-orm";
 
 
-import { purchase_request } from "../schema";
-import { insertPurchaseRequestPersetujuanSchema, purchase_request_persetujuan, PurchaseRequestPersetujuan } from "./schema";
+import { purchase_request } from "@/databases/purchase_request/schema";
+import { insertPurchaseRequestPersetujuanSchema, purchase_request_persetujuan, PurchaseRequestPersetujuan } from "@/databases/purchase_request/persetujuan/schema";
 import { getPegawaiById } from "../../pegawai/service";
 
 export const getPurchaseRequestPersetujuan = async (id: PurchaseRequestPersetujuan["id"], tx = db) => {

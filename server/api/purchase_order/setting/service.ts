@@ -1,6 +1,7 @@
 import { eq, sql } from "drizzle-orm";
 
-import { NewPurchaseOrderSetting, PurchaseOrderSetting, UpdatePurchaseOrderSetting, purchase_order_setting } from "./schema";
+import { NewPurchaseOrderSetting, PurchaseOrderSetting, UpdatePurchaseOrderSetting, purchase_order_setting } from "@/databases/purchase_order/setting/schema";
+import { purchase_order } from '@/databases/purchase_order/schema';
 
 export const getPurchaseOrderSettings = async (tx = db) => {
     const [data] = await tx.select().from(purchase_order_setting);

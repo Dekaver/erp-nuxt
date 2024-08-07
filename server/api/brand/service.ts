@@ -1,5 +1,5 @@
 import { eq, sql } from 'drizzle-orm';
-import { type NewBrand, type Brand, brand, UpdateBrand } from '../brand/schema';
+import { type NewBrand, type Brand, brand, UpdateBrand } from '@/databases/brand/schema';
 
 export const getBrand = async (tx = db) => {
     return await db.select().from(brand);

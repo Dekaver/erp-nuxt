@@ -1,7 +1,7 @@
 import { and, eq, sql } from "drizzle-orm";
 
-import { NewStokValue, StokValue, stok_value } from "./schema";
-import { NewStokBarang } from "../stok_barang/schema";
+import { NewStokValue, StokValue, stok_value } from "@/databases/gudang/stok_value/schema";
+import { NewStokBarang } from "@/databases/gudang/stok_barang/schema";
 
 export const getStokValue = async (tx = db) => {
     const data = await tx.select().from(stok_value);

@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm';
 import bcrypt from 'bcrypt';
-import { pengguna, Pengguna, NewPengguna, UpdatePengguna } from './schema';
+import { pengguna, Pengguna, NewPengguna, UpdatePengguna } from '@/databases/pengguna/schema';
 import { ValidationError } from '../../../libs/errors';
-import { pegawai } from '../pegawai/schema';
-import { jabatan } from '../jabatan/schema';
+import { pegawai } from '@/databases/pegawai/schema';
+import { jabatan } from '@/databases/jabatan/schema';
 
 export const getPengguna = async () => {
     const data = await db

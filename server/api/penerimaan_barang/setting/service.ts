@@ -1,7 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 
-
-import { NewPenerimaanBarangSetting, penerimaan_barang_setting, PenerimaanBarangSetting, UpdatePenerimaanBarangSetting } from "./schema";
+import { NewPenerimaanBarangSetting, penerimaan_barang_setting, PenerimaanBarangSetting, UpdatePenerimaanBarangSetting } from "@/databases/penerimaan_barang/setting/schema";
 
 export const getPenerimaanBarangSettings = async (tx = db) => {
     const [data] = await tx.select().from(penerimaan_barang_setting);

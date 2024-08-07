@@ -1,4 +1,4 @@
-import { InferSelectModel, getTableColumns } from 'drizzle-orm';
+import { type InferSelectModel, getTableColumns } from 'drizzle-orm';
 import { pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';

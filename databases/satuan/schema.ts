@@ -2,7 +2,7 @@ import { type InferSelectModel, getTableColumns } from 'drizzle-orm';
 import { pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-import { timestamps } from '../../server/api/schema';
+import { timestamps } from '../schema';
 
 export const satuan = pgTable('satuan', {
     id: serial('id').primaryKey().notNull(),

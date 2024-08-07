@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { jenis_kendaraan, JenisKendaraan, NewJenisKendaraan } from "./schema";
+import { jenis_kendaraan, JenisKendaraan, NewJenisKendaraan } from "@/databases/jenis_kendaraan/schema";
 
 export const getJenisKendaraan = async (tx = db) => {
     const data = await tx.select().from(jenis_kendaraan);

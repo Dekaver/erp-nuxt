@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { type NewDepartemen, type Departemen, departemen } from "./schema";
+import { type NewDepartemen, type Departemen, departemen } from "@/databases/departemen/schema";
 
 export const getDepartemen = async (tx = db) => {
     const data = await tx.select().from(departemen);

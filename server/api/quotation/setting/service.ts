@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 
-import { NewQuotationSetting, QuotationSetting, UpdateQuotationSetting, quotation_setting } from "./schema";
+import { NewQuotationSetting, QuotationSetting, UpdateQuotationSetting, quotation_setting } from "@/databases/quotation/setting/schema";
 
 export const getQuotationSettings = async (tx = db) => {
     const [data] = await tx.select().from(quotation_setting);

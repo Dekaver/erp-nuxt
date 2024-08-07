@@ -1,10 +1,10 @@
 import { and, eq, getTableColumns, ilike, is, isNull, ne, notExists, or, SQL } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
-import { agama } from '../agama/schema';
-import { departemen } from '../departemen/schema';
-import { provinces, cities, districts } from '../indo/schema';
-import { jabatan } from '../jabatan/schema';
-import { pengguna } from '../pengguna/schema';
+import { agama } from '@/databases/agama/schema';
+import { departemen } from '@/databases/departemen/schema';
+import { provinces, cities, districts } from '@/databases/indo/schema';
+import { jabatan } from '@/databases/jabatan/schema';
+import { pengguna } from '@/databases/pengguna/schema';
 import { pegawai, Pegawai, NewPegawai, PegawaiColumns } from './schema';
 
 export const getPegawai = async (tx = db) => {

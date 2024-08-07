@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 
-import { NewPaymentApDetail, payment_ap_detail } from "./schema";
+import { NewPaymentApDetail, payment_ap_detail } from "@/databases/payment_ap/detail/schema";
 
 
 export const getPaymentApDetailById = async (id: NewPaymentApDetail['id'], tx = db) => {

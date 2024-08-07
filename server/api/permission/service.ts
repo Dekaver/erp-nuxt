@@ -1,8 +1,8 @@
 import { asc, eq, ilike, or, SQL, sql } from "drizzle-orm";
-import { type NewPermission, type Permission, permission, permissionColumns } from "../permission/schema";
+import { type NewPermission, type Permission, permission, permissionColumns } from "@/databases/permission/schema";
 import { alias } from "drizzle-orm/pg-core";
-import { pengguna } from "../pengguna/schema";
-import { pengguna_permission } from "../pengguna/permission/schema";
+import { pengguna } from "@/databases/pengguna/schema";
+import { pengguna_permission } from "@/databases/pengguna/permission/schema";
 
 /**
  * Retrieves a list of permissions based on the provided search criteria.

@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { NewSettingPembelian, settingPembelian } from "./schema";
+import { NewSettingPembelian, settingPembelian } from "@/databases/setting_pembelian/schema";
 
 export const getSettingPembelian = async (tx = db) => {
     const [data] = await tx.select().from(settingPembelian);

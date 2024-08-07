@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { NewSettingPenjualan, settingPenjualan } from "./schema";
+import { NewSettingPenjualan, settingPenjualan } from "@/databases/setting_penjualan/schema";
 
 export const getSettingPenjualan = async (tx = db) => {
     const [data] = await tx.select().from(settingPenjualan);

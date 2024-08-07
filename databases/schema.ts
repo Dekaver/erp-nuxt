@@ -1,0 +1,26 @@
+import { integer, pgSchema, text, timestamp } from 'drizzle-orm/pg-core';
+import { pegawai } from './pegawai/schema';
+
+export const statis = pgSchema('statis');
+
+export const timestamps = {
+    created_by: integer('created_by')
+        .notNull()
+        .references(() => pegawai.id),
+    created_at: timestamp('created_at', { mode: 'string' }).defaultNow(),
+    updated_by: integer('updated_by')
+        .notNull()
+        .references(() => pegawai.id),
+    updated_at: timestamp('updated_at', { mode: 'string' }).defaultNow(),
+    deleted_by: integer('deleted_by').references(() => pegawai.id),
+    deleted_at: timestamp('deleted_at', { mode: 'string' }),
+    deleted_reason: text('deleted_reason').default('-').notNull(),
+};
+
+export const persetujuanStrings: ('persetujuan1' | 'persetujuan2' | 'persetujuan3' | 'persetujuan4')[] = ['persetujuan1', 'persetujuan2', 'persetujuan3', 'persetujuan4'];
+export const jabatanPersetujuanStrings: ('jabatan_persetujuan1' | 'jabatan_persetujuan2' | 'jabatan_persetujuan3' | 'jabatan_persetujuan4')[] = [
+    'jabatan_persetujuan1',
+    'jabatan_persetujuan2',
+    'jabatan_persetujuan3',
+    'jabatan_persetujuan4',
+];

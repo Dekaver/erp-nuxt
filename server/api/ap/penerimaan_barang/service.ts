@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 
 
-import { penerimaan_barang } from "../../penerimaan_barang/schema";
-import { ap_penerimaan_barang, ApPenerimaanBarang, apPenerimaanbarangColumns, NewApPenerimaanBarang } from "./schema";
+import { penerimaan_barang } from "@/databases/penerimaan_barang/schema";
+import { ap_penerimaan_barang, ApPenerimaanBarang, apPenerimaanbarangColumns, NewApPenerimaanBarang } from "@/databases/ap/penerimaan_barang/schema";
 
 export const getApPenerimaanBarangById = async (id: ApPenerimaanBarang["id_ap"], tx = db) => {
     return await tx
