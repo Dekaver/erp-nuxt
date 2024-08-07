@@ -2,7 +2,7 @@
   <div class="grid">
       <div class="col-12">
           <div class="card">
-              <ToolBarList title="Manage Proyek" @new="FormNew" :useFilter="false" :useNew="$can('create', 'proyek')" />
+              <ToolBarList title="Kelola Satuan" @new="FormNew" :useFilter="false" :useNew="$can('create', 'master-satuan')" />
 
               <DataTableList
                   title="Kelola Satuan"
@@ -12,9 +12,9 @@
                   @edit="FormEdit"
                   @delete="FormDelete"
                   :options="{
-                      primaryField: 'kode',
-                      showDelete: $can('delete', 'proyek'),
-                      showEdit: $can('update', 'proyek'),
+                      primaryField: 'satuan',
+                      showDelete: $can('delete', 'master-satuan'),
+                      showEdit: $can('update', 'master-satuan'),
                   }"
               >
                   <template #columns="{ columns }">
@@ -63,12 +63,11 @@ const isEdit = ref(false);
 const formDialog = ref(false);
 
 const columns = [
-  { header: 'Kode', field: 'kode', class: 'w-20rem' },
-  { header: 'Nama', field: 'proyek', class: 'w-20rem' },
-  { header: 'Lokasi', field: 'lokasi', class: 'w-20rem' },
+  { header: 'Nama', field: 'satuan', class: 'w-20rem' },
+  { header: 'Keterangan', field: 'keterangan', class: 'w-20rem' },
 ];
 
-const selectedColumns = reactive<string[]>(['proyek', 'kode', 'lokasi']);
+const selectedColumns = reactive<string[]>(['satuan', 'keterangan']);
 
 // Form Error
 const FormSchema = insertSatuanSchema.omit({ id: true, created_by: true, updated_by: true });
