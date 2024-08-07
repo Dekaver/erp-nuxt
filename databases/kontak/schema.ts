@@ -1,7 +1,7 @@
 import { pgTable, integer, varchar, serial, text, boolean, numeric } from "drizzle-orm/pg-core";
 import { account } from "../account/schema";
 import { createInsertSchema } from "drizzle-zod";
-import { InferSelectModel, getTableColumns } from "drizzle-orm";
+import { type InferSelectModel, getTableColumns } from "drizzle-orm";
 import { z } from "zod";
 import { top } from "../top/schema";
 

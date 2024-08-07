@@ -1,4 +1,4 @@
-import { InferSelectModel, getTableColumns } from 'drizzle-orm';
+import { type InferSelectModel, getTableColumns } from 'drizzle-orm';
 import { integer, pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -18,4 +18,4 @@ export type Top = InferSelectModel<typeof top>;
 export type NewTop = z.infer<typeof insertTopSchema>;
 export type UpdateTop = z.infer<typeof updateTopSchema>;
 
-export const TuopColumns = getTableColumns(top);
+export const TopColumns = getTableColumns(top);
