@@ -21,6 +21,27 @@ const list = [
                 key: 'nama' // value from object
             }
         ],
+    },
+    {
+        name: 'Top',
+        placeholder: 'Pilih Top',
+        url: 'top',
+        key: 'id_top',
+        label: 'id',
+        option: [
+            {
+                position: 'left', // left, right, center
+                width: 'half', // quarter, half, three-quarter, full
+                color: 'blue',
+                key: 'top' // value from object
+            },
+            {
+                position: 'right', // left, right, center
+                width: 'half', // quarter, half, three-quarter, full
+                color: 'red',
+                key: 'keterangan' // value from object
+            }
+        ],
     }
 ]
 
@@ -37,7 +58,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
                     type: String,
                     default: fitur.key
                 },
-                label: {
+                optionLabel: {
                     type: String,
                     default: fitur.label
                 },
