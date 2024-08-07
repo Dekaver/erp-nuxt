@@ -1,0 +1,42 @@
+<div id="loading-container"></div>
+
+<!-- Include Lottie library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"></script>
+
+<!-- Script to load the animation -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/assets/erp_nusantara.json', true);
+    xhr.responseType = 'text';
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var animationData = JSON.parse(xhr.responseText);
+        var loadingAnimation = lottie.loadAnimation({
+          container: document.getElementById('loading-container'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          animationData: animationData
+        });
+      }
+    };
+    xhr.send();
+  });
+</script>
+
+<style>
+  body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0
+  }
+  #loading-container {
+    width: 300px;
+    height: 300px;
+  }
+</style>
