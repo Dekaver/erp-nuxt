@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         components: {
             // Tentukan komponen yang ingin disertakan
             include: '*',
-            exclude: ['Calendar', 'Carousel', 'DatePicker'],
+            exclude: ['Calendar', 'Carousel', 'DatePicker', 'Editor', 'Chart'],
 
         },
         directives: {
@@ -47,6 +47,7 @@ export default defineNuxtConfig({
     // OTHER
     plugins: ['~/plugins/global-variable.js'],
     ssr: false,
+    spaLoadingTemplate: true,
     css: ['primeicons/primeicons.css'],
     compatibilityDate: '2024-07-27',
 });
