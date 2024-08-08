@@ -42,7 +42,50 @@ const list = [
                 key: 'keterangan' // value from object
             }
         ],
+    },
+    {
+        name: 'Kantor',
+        placeholder: 'Pilih Kantor',
+        url: 'kantor',
+        key: 'id_kantor',
+        label: 'Nama',
+        option: [
+            {
+                position: 'left', // left, right, center
+                width: 'half', // quarter, half, three-quarter, full
+                color: 'blue',
+                key: 'nama' // value from object
+            },
+            {
+                position: 'right', // left, right, center
+                width: 'half', // quarter, half, three-quarter, full
+                color: 'red',
+                key: 'keterangan' // value from object
+            }
+        ],
+    },
+    {
+        name: 'Klasifikasi',
+        placeholder: 'Pilih Kategori',
+        url: 'account/category',
+        key: 'id_kantor',
+        label: 'Nama',
+        option: [
+            {
+                position: 'left', // left, right, center
+                width: 'half', // quarter, half, three-quarter, full
+                color: 'blue',
+                key: 'nama' // value from object
+            },
+            {
+                position: 'right', // left, right, center
+                width: 'half', // quarter, half, three-quarter, full
+                color: 'red',
+                key: 'keterangan' // value from object
+            }
+        ],
     }
+
 ]
 
 export default defineNuxtPlugin(({ vueApp }) => {
