@@ -1,5 +1,5 @@
-import { InferSelectModel, getTableColumns } from 'drizzle-orm';
-import { AnyPgColumn, boolean, integer, pgTable, serial, smallint, varchar } from 'drizzle-orm/pg-core';
+import { type InferSelectModel, getTableColumns } from 'drizzle-orm';
+import { type AnyPgColumn, boolean, integer, pgTable, serial, smallint, varchar } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { timestamps } from '../schema';
