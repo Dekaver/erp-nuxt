@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '../store/user';
+import { useUserStore } from '../stores/user';
 const { loginSchema, form, errors, isFetching, loginUser, clearUserForm } = useAuth();
 //use guest layout
 definePageMeta({
