@@ -44,6 +44,21 @@ const list = [
         ],
     },
     {
+        name: 'HariLiburTipe',
+        placeholder: 'Pilih Tipe',
+        url: 'hrd/hari-libur/tipe',
+        key: 'id',
+        label: 'tipe',
+        option: [
+            {
+                position: 'left', // left, right, center
+                width: 'full', // quarter, half, three-quarter, full
+                color: 'blue',
+                key: 'tipe' // value from object
+            },
+        ],
+    },
+    {
         name: 'Kantor',
         placeholder: 'Pilih Kantor',
         url: 'kantor',
