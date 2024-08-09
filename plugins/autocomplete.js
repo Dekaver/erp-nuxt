@@ -23,6 +23,23 @@ const list = [
         ],
     },
     {
+        name: 'HariLiburTipe',
+        placeholder: 'Pilih Tipe',
+        url: 'hrd/hari-libur/tipe',
+        key: 'id',
+        label: 'tipe',
+        option: [
+            {
+                position: 'left', // left, right, center
+                width: 'full', // quarter, half, three-quarter, full
+                color: 'blue',
+                key: 'tipe' // value from object
+            },
+        ],
+    },
+
+    // Bakhti
+    {
         name: 'Top',
         placeholder: 'Pilih Top',
         url: 'top',
@@ -41,21 +58,6 @@ const list = [
                 color: 'red',
                 key: 'keterangan' // value from object
             }
-        ],
-    },
-    {
-        name: 'HariLiburTipe',
-        placeholder: 'Pilih Tipe',
-        url: 'hrd/hari-libur/tipe',
-        key: 'id',
-        label: 'tipe',
-        option: [
-            {
-                position: 'left', // left, right, center
-                width: 'full', // quarter, half, three-quarter, full
-                color: 'blue',
-                key: 'tipe' // value from object
-            },
         ],
     },
     {
@@ -82,25 +84,25 @@ const list = [
     {
         name: 'Klasifikasi',
         placeholder: 'Pilih Kategori',
-        url: 'account/category',
-        key: 'id_kantor',
-        label: 'Nama',
+        url: 'account',
+        key: 'id',
+        label: 'name',
         option: [
             {
                 position: 'left', // left, right, center
-                width: 'half', // quarter, half, three-quarter, full
+                width: 'full', // quarter, half, three-quarter, full
                 color: 'blue',
-                key: 'nama' // value from object
+                key: 'name' // value from object
             },
             {
-                position: 'right', // left, right, center
-                width: 'half', // quarter, half, three-quarter, full
+                position: 'left', // left, right, center
+                width: 'full', // quarter, half, three-quarter, full
                 color: 'red',
-                key: 'keterangan' // value from object
+                key: 'code' // value from object
             }
         ],
     }
-
+    // End Of Bakhti
 ]
 
 export default defineNuxtPlugin(({ vueApp }) => {
