@@ -6,8 +6,8 @@ import { z } from "zod";
 export const absenTempat = pgTable("absen_tempat", {
     id: serial("id").primaryKey().notNull(),
     nama: varchar("nama", { length: 100 }).notNull(),
-    latitude: doublePrecision("latitude").notNull(),
-    longitude: doublePrecision("longitude").notNull(),
+    latitude: varchar("latitude").notNull(),
+    longitude: varchar("longitude").notNull(),
     jarak_absen: integer("jarak_absen").notNull(),
 });
 
