@@ -1,9 +1,12 @@
-import { getAccountByCategory } from "./service"
+import { getAccountByCategory, getAccountOption } from "./service"
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   let data;
-  if (query.category){
+  if (query.type === 'option') {
+    data = getAccountOption(query)
+  }
+  else if (query.category){
     const { category } = query
     const arr = category.toString().split(",").map(Number);
     console.log(arr)

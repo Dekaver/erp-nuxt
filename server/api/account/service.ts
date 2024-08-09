@@ -118,36 +118,36 @@ export const getAccountById = async (params: Account["id"], tx = db) => {
     return data[0];
 };
 
-export const getAccountOption = async (option: any, tx = db) => {
+export const getAccountOption = async (params: any, tx = db) => {
     const data = tx.select().from(account);
     
 
-    const where: SQL[] = [];
-    if (option.min && option.max) {
-        where.push(gte(sql`REPLACE(account.code, '-', '')`, option.min))
-        where.push(lte(sql`REPLACE(account.code, '-', '')`, option.max));
-    } else if (option.parent) {
+    const condition: SQL[] = [];
+    if (params.min && params.max) {
+        condition.push(gte(sql`REPLACE(account.code, '-', '')`, params.min))
+        condition.push(lte(sql`REPLACE(account.code, '-', '')`, params.max));
+    } else if (params.parent) {
         const parent = alias(account, "parent");
         data.innerJoin(parent, eq(parent.id, account.parent));
-        where.push(eq(parent.code, option.parent));
-    } else if (option.head) {
-        where.push(eq(sql`SUBSTRING(account.code FROM 1 FOR 1)`, option.head));
-    } else if (option.cashable) {
-        where.push(eq(account.is_cash, sql.raw(`${option.cashable}`)));
+        condition.push(eq(parent.code, params.parent));
+    } else if (params.head) {
+        condition.push(eq(sql`SUBSTRING(account.code FROM 1 FOR 1)`, params.head));
+    } else if (params.cashable) {
+        condition.push(eq(account.is_cash, sql.raw(`${params.cashable}`)));
     }
-    if (option.level) {
-        where.push(eq(account.level, option.level));
+    if (params.level) {
+        condition.push(eq(account.level, params.level));
     }
-    if (option.query) {
-        where.push(or(ilike(account.code, `%${option.query}%`), ilike(account.name, `%${option.query}%`)) as SQL<unknown>);
-        // where.push()
+    if (params.search) {
+        condition.push(or(ilike(account.code, `%${params.search}%`), ilike(account.name, `%${params.search}%`)) as SQL<unknown>);
+        // condition.push()
     }
-    if (option.orderBy) {
-        data.orderBy(account[option.orderBy as 'code'])
+    if (params.orderBy) {
+        data.orderBy(account[params.orderBy as 'code'])
     }else{
         data.orderBy(account.name)
     }
-    return await data.where(and(eq(account.is_active, true), ...where));
+    return await data.where(and(eq(account.is_active, true), ...condition));
 };
 
 export const getAccountByCode = async (params: Account["code"], tx = db) => {

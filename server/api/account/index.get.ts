@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     try {
         const query: any = await getQuery(event)
         let data;
-        if (query.type === 'option') {            
+        if (query.type === 'option') { 
             data = await getAccountOption(query);
         }
         else if (query.category) {
