@@ -32,11 +32,13 @@ export default function useCrud<T, NewT = T, UpdateT = T>(baseUrl: string) {
     const isFetching = ref(false);
 
     // Fetch all items
-    async function fetchItems() {
+    async function fetchItems(extraendpoint?: string, query?: object) {
         isFetching.value = true;
         errors.value = null;
         try {
-            const { data, error, status: responseStatus } = await useAsyncData('items', () => $fetch(`/${baseUrl}`));
+            const { data, error, status: responseStatus } = await useAsyncData('items', () => $fetch(`/${baseUrl}${extraendpoint}`, {
+                query
+            }));
             errors.value = error;
             status.value = responseStatus;
             if (data.value && typeof data.value === 'object' && 'data' in data.value) {
