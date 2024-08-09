@@ -1,5 +1,5 @@
 import { sql, eq } from "drizzle-orm";
-import { type NewKantor, type Kantor, kantor, KantorColumns } from "@/databases/kantor/schema";
+import { type NewKantor, type Kantor, kantor, KantorColumns, UpdateKantor } from "@/databases/kantor/schema";
 
 export const getKantor = async (tx = db) => {
     const data = await tx.execute(
@@ -23,7 +23,7 @@ export const createKantor = async (params: NewKantor) => {
     return data;
 };
 
-export const updateKantor = async (params: Kantor["id"], form: NewKantor) => {
+export const updateKantor = async (params: Kantor["id"], form: UpdateKantor) => {
     const [data] = await db.update(kantor).set(form).where(eq(kantor.id, params)).returning();
     return data;
 };
