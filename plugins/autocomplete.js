@@ -101,7 +101,29 @@ const list = [
                 key: 'code' // value from object
             }
         ],
-    }
+    },
+    {
+        name: 'Account',
+        placeholder: 'Pilih Akun',
+        url: 'account',
+        key: 'id',
+        label: 'name',
+        option: [
+            {
+                position: 'left', // left, right, center
+                width: 'full', // quarter, half, three-quarter, full
+                color: 'blue',
+                key: 'name' // value from object
+            },
+            {
+                position: 'left', // left, right, center
+                width: 'full', // quarter, half, three-quarter, full
+                color: 'red',
+                key: 'code' // value from object
+            }
+        ],
+    },
+
     // End Of Bakhti
 ]
 
