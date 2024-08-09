@@ -13,7 +13,6 @@ export const indexProvinsi = async () => {
 export const indexKota = async () => {
     try {
         return await db.select().from(cities);
-        
     } catch (error) {
         return (error);
     }
@@ -101,6 +100,7 @@ export const showCompleteAddress = async (params: CompleteAddress) => {
             .leftJoin(cities, eq(provinces.prov_id, cities.prov_id))
             .leftJoin(districts, eq(cities.city_id, districts.city_id))
             .where(and(eq(provinces.prov_id, parseInt(id_provinsi)), eq(cities.city_id, parseInt(id_kabupaten)), eq(districts.dis_id, parseInt(id_kecamatan))));
+        return data;
     } catch (error) {
         return (error);
     }
