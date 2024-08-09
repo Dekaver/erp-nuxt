@@ -64,8 +64,8 @@ const list = [
         name: 'Kantor',
         placeholder: 'Pilih Kantor',
         url: 'kantor',
-        key: 'id_kantor',
-        label: 'Nama',
+        key: 'id',
+        label: 'nama',
         option: [
             {
                 position: 'left', // left, right, center
@@ -77,7 +77,7 @@ const list = [
                 position: 'right', // left, right, center
                 width: 'half', // quarter, half, three-quarter, full
                 color: 'red',
-                key: 'keterangan' // value from object
+                key: 'id' // value from object
             }
         ],
     },
